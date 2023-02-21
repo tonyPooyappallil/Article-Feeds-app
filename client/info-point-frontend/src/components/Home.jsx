@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
+import Preferences from "./signup/Preferences";
 
 const Home = () => {
   const [id, setId] = useState("");
@@ -14,12 +15,32 @@ const Home = () => {
   const [dob, setDob] = useState(new Date());
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState({});
+
+  console.log("selectedCategory", selectedCategory);
+
   const loginSubmit = (e) => {
     e.preventDefault();
-    alert("hmm");
+
+    alert("login");
   };
 
-  const signUpSubmit = (e) => {
+  useEffect(() => {
+    const dataFetch = async () => {
+      axios
+        .get("https://busy-plum-bee-cuff.cyclic.app/category")
+        .then(function (data) {
+          setCategory(data.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+  }, []);
+
+  const signUpSubmit = async (e) => {
     e.preventDefault();
 
     if (passwordMismatch) return;
@@ -44,6 +65,15 @@ const Home = () => {
       return;
     }
 
+    //process category selections
+
+    const finalCategoryList = Object.keys(selectedCategory);
+    if (!finalCategoryList.length) {
+      alert("You have to select atleast 1 interested category");
+      return;
+    }
+
+    // creating the user
     axios
       .post("https://busy-plum-bee-cuff.cyclic.app/user", {
         firstName,
@@ -52,6 +82,7 @@ const Home = () => {
         email: id,
         mobileNum: mobile,
         password,
+        interests: finalCategoryList,
       })
       .then(function (response) {
         console.log(response);
@@ -63,6 +94,19 @@ const Home = () => {
     setId("");
     setPassword("");
     setNewUser(false);
+  };
+
+  const catSelected = (id) => {
+    if (selectedCategory[id]) {
+      let data = { ...selectedCategory };
+      delete data[id];
+      setSelectedCategory({ ...data });
+      return;
+    }
+
+    setSelectedCategory((prevState) => {
+      return { ...prevState, ...{ [id]: 1 } };
+    });
   };
 
   return (
@@ -173,6 +217,7 @@ const Home = () => {
                 {passwordMismatch && <div>Passwords mismatch!</div>}
               </div>
             </label>
+            <Preferences category={category} catSelected={catSelected} />
             <input type="submit" value="Submit" />
           </form>
         </div>

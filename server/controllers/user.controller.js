@@ -29,4 +29,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/login", async (req, res) => {
+  const { id, password } = req.params;
+  try {
+    const data = await User.find({
+      $or: [{ email: id }, { mobileNum: id }],
+    })
+      .lean()
+      .exec();
+    return res.status(200).send({ data });
+  } catch (err) {
+    return res.status(400).send(err);
+  }
+});
+
 module.exports = router;
