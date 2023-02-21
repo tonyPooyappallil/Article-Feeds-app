@@ -20,7 +20,7 @@ const Home = () => {
 
   console.log("selectedCategory", selectedCategory);
 
-  const loginSubmit = (e) => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
 
     axios

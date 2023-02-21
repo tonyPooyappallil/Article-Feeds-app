@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { id, password } = req.params;
+  const { id, password } = req.body;
   console.log("id, password", id, password);
   try {
     const data = await User.find({
