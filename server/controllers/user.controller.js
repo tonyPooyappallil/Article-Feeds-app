@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
     }
     console.log("user", user);
 
-    if (!user) {
+    if (!user || user == null) {
       throw new Error("User doesn't exists. Please register");
     }
     console.log("before pas ver");

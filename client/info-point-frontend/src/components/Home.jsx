@@ -34,8 +34,6 @@ const Home = () => {
       .catch(function (error) {
         console.log(error);
       });
-
-    alert("login");
   };
 
   useEffect(() => {
