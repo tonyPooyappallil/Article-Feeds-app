@@ -13,7 +13,7 @@ app.use("/user", userController);
 app.use("/article", articleController);
 app.use("/category", categoryController);
 
-app.listen(process.env.port || 3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   connect();
   console.log("now listening for requests");
 });
