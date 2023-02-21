@@ -31,6 +31,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { id, password } = req.params;
+  console.log("id, password", id, password);
   try {
     const data = await User.find({
       $or: [{ email: id }, { mobileNum: id }],
