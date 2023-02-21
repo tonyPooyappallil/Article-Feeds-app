@@ -30,9 +30,10 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { id, password } = req.body;
-  console.log("id, password", id, password);
   try {
+    const { id, password } = req.body;
+    console.log("id, password", id, password);
+
     console.log("inside try");
     let user;
     if (isNaN(id)) {
