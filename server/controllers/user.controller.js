@@ -33,12 +33,21 @@ router.post("/login", async (req, res) => {
   const { id, password } = req.body;
   console.log("id, password", id, password);
   try {
-    const data = await User.find({
+    const user = await User.findOne({
       $or: [{ email: id }, { mobileNum: id }],
     })
       .lean()
       .exec();
-    return res.status(200).send({ data });
+    if (!user) {
+      return res
+        .status(400)
+        .send(new Error("User doesn't exists. Please register"));
+    }
+    let passwordVerification = await user.verifyPassword(password);
+    if (!passwordVerification) {
+      return res.status(400).send(new Error("Incorrect password"));
+    }
+    return res.status(200).send({ success: true });
   } catch (err) {
     return res.status(400).send(err);
   }
