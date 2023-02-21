@@ -33,19 +33,27 @@ router.post("/login", async (req, res) => {
   const { id, password } = req.body;
   console.log("id, password", id, password);
   try {
+    console.log("inside try");
     let user;
     if (isNaN(id)) {
+      console.log("inside if");
+
       user = await User.findOne({ email: id }).lean().exec();
     } else {
+      console.log("inside else");
+
       user = await User.findOne({ mobileNum: id }).lean().exec();
     }
+    console.log("user", user);
 
     if (!user) {
       return res
         .status(400)
         .send(new Error("User doesn't exists. Please register"));
     }
+    console.log("before pas ver");
     let passwordVerification = await user.verifyPassword(password);
+    console.log("after pass ver");
     if (!passwordVerification) {
       return res.status(400).send(new Error("Incorrect password"));
     }
