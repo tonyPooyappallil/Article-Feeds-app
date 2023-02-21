@@ -33,7 +33,6 @@ router.post("/login", async (req, res) => {
   try {
     const { id, password } = req.body;
     console.log("id, password", id, password);
-
     console.log("inside try");
     let user;
     if (isNaN(id)) {
@@ -48,15 +47,13 @@ router.post("/login", async (req, res) => {
     console.log("user", user);
 
     if (!user) {
-      return res
-        .status(400)
-        .send(new Error("User doesn't exists. Please register"));
+      throw new Error("User doesn't exists. Please register");
     }
     console.log("before pas ver");
     let passwordVerification = await user.verifyPassword(password);
     console.log("after pass ver");
     if (!passwordVerification) {
-      return res.status(400).send(new Error("Incorrect password"));
+      throw new Error("Incorrect password");
     }
     return res.status(200).send({ success: true });
   } catch (err) {
