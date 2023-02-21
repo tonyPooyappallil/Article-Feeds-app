@@ -5,6 +5,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+console.log("before controllers 3");
+
 const userController = require("./controllers/user.controller");
 const articleController = require("./controllers/article.controller");
 const categoryController = require("./controllers/category.controller");
@@ -12,6 +14,8 @@ const categoryController = require("./controllers/category.controller");
 app.use("/user", userController);
 app.use("/article", articleController);
 app.use("/category", categoryController);
+
+console.log("my process.env.PORT", process.env.PORT);
 
 const PORT = process.env.PORT || 3000;
 connect().then(() => {
