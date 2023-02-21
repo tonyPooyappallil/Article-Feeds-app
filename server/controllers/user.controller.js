@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { id, password } = req.params;
   try {
     const data = await User.find({

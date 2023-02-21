@@ -23,6 +23,18 @@ const Home = () => {
   const loginSubmit = (e) => {
     e.preventDefault();
 
+    axios
+      .post("https://busy-plum-bee-cuff.cyclic.app/user/login", {
+        id,
+        password,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     alert("login");
   };
 
