@@ -33,11 +33,13 @@ router.post("/login", async (req, res) => {
   const { id, password } = req.body;
   console.log("id, password", id, password);
   try {
-    const user = await User.findOne({
-      $or: [{ email: id }, { mobileNum: id }],
-    })
-      .lean()
-      .exec();
+    let user;
+    if (isNaN(id)) {
+      user = await User.findOne({ email: id }).lean().exec();
+    } else {
+      user = await User.findOne({ mobileNum: id }).lean().exec();
+    }
+
     if (!user) {
       return res
         .status(400)
