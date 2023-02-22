@@ -3,6 +3,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AppContext, UserContext } from "../../context";
 import ArticleWall from "./ArticleWall";
+import styled from "styled-components";
+
+const Container = styled.div({
+  display: "flex",
+  flexDirection: "row",
+});
 
 const Dashboard = () => {
   const location = useLocation();
@@ -11,8 +17,6 @@ const Dashboard = () => {
   const [articles, setArticles] = useState([]);
   const [category, setCategory] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-
-  console.log("loggedIn", loggedIn, "user", user);
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -51,11 +55,14 @@ const Dashboard = () => {
     <div>
       <div>
         <h2>InfoPoint</h2>
-        <ArticleWall
-          articles={articles}
-          category={category}
-          users={allUsers}
-        ></ArticleWall>
+        <Container>
+          <div>left nav</div>
+          <ArticleWall
+            articles={articles}
+            category={category}
+            users={allUsers}
+          ></ArticleWall>
+        </Container>
       </div>
     </div>
   );

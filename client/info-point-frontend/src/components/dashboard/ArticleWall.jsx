@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const ArticleWall = ({ articles, category, users }) => {
+  const [mappedArticles, setmappedArticles] = useState([]);
   console.log("articles, category, user", articles, category, users);
   useEffect(() => {
     let processedCategoryObject = {};
@@ -21,13 +22,14 @@ const ArticleWall = ({ articles, category, users }) => {
         category: processedCategoryObject[item.category],
       };
     });
+    setmappedArticles(mappedArticleData);
     console.log("mappedArticleData", mappedArticleData);
   }, [articles, category, users]);
 
   return (
     <div>
       {" "}
-      {articles.map((article) => (
+      {mappedArticles.map((article) => (
         <div>
           <div>
             <img src={article.img} alt="" />{" "}
@@ -37,6 +39,13 @@ const ArticleWall = ({ articles, category, users }) => {
             <h2>{article.title} </h2>{" "}
           </div>
           <div>{article.description}</div>
+          <div>
+            <div> {article.author} </div>
+            <div> {article.category} </div>
+            <div> like {article.likes.length} </div>
+            <div> dislike {article.dislikes.length} </div>
+            <div>block</div>
+          </div>
           <hr />
         </div>
       ))}
