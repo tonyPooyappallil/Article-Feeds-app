@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import Preferences from "./signup/Preferences";
+import { useNavigate } from "react-router-dom";
+import { AppContext, UserContext } from "../context";
 
 const Home = () => {
   const [id, setId] = useState("");
@@ -17,8 +19,10 @@ const Home = () => {
   const [lastName, setLastName] = useState("");
   const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
-
-  console.log("selectedCategory", selectedCategory);
+  const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
+  const { loggedIn, setLogin } = useContext(AppContext);
+  const { user, setUserContext } = useContext(UserContext);
 
   const loginSubmit = async (e) => {
     e.preventDefault();
@@ -29,10 +33,18 @@ const Home = () => {
         password,
       })
       .then(function (response) {
-        console.log(response);
+        setUserData(response.data);
+        setLogin(true);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        navigate("/dashboard", {
+          state: { user: { ...response.data }, category: category },
+        });
       })
       .catch(function (error) {
         console.log(error);
+        alert(
+          "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
+        );
       });
   };
 
@@ -48,6 +60,10 @@ const Home = () => {
         });
     };
     dataFetch();
+
+    const items = JSON.parse(localStorage.getItem("user"));
+    console.log("items", items);
+    setUserContext({ ...items });
   }, []);
 
   const signUpSubmit = async (e) => {
