@@ -61,7 +61,28 @@ router.post("/login", async (req, res) => {
     if (!passwordVerification) {
       throw new Error("Incorrect password");
     }
-    return res.status(200).send({ success: true });
+
+    const {
+      firstName,
+      lastName,
+      dateOfBirth,
+      _id,
+      email,
+      mobileNum,
+      interests,
+      articles,
+    } = user;
+    return res.status(200).send({
+      success: true,
+      firstName,
+      lastName,
+      dateOfBirth,
+      id: _id,
+      email,
+      mobileNum,
+      interests,
+      articles,
+    });
   } catch (err) {
     return res.status(400).send(err);
   }
