@@ -46,11 +46,11 @@ router.post("/login", async (req, res) => {
     }
     console.log("user", user);
 
-    if (!user || user == null) {
+    if (!user) {
       throw new Error("User doesn't exists. Please register");
     }
     console.log("before pas ver");
-    let passwordVerification = await user.verifyPassword(password);
+    let passwordVerification = await User.verifyPassword(password);
     console.log("after pass ver");
     if (!passwordVerification) {
       throw new Error("Incorrect password");
