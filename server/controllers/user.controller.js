@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/user.model");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
   try {
@@ -50,7 +51,12 @@ router.post("/login", async (req, res) => {
       throw new Error("User doesn't exists. Please register");
     }
     console.log("before pas ver");
-    let passwordVerification = await User.verifyPassword(password);
+    let passwordVerification = bcrypt.compareSync(password, user.password);
+    if (passwordVerification) {
+      console.log("Password correct");
+    } else {
+      console.log("Password wrong");
+    }
     console.log("after pass ver");
     if (!passwordVerification) {
       throw new Error("Incorrect password");
