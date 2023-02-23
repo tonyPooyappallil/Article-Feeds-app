@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const ArticleWall = ({ articles, category, users, loggedInUser }) => {
+const ArticleWall = ({
+  articles,
+  category,
+  users,
+  loggedInUser,
+  articleUpdate,
+}) => {
   const [mappedArticles, setmappedArticles] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     let processedCategoryObject = {};
     category.forEach(({ _id, categoryName }) => {
@@ -12,8 +20,11 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
       processedUserObject[_id] = `${firstName} ${lastName}`;
     });
 
-    const filteredArticleData = articles.filter(({ category }) => {
-      return category.some((item) => loggedInUser.interests.includes(item));
+    const filteredArticleData = articles.filter(({ category, blockList }) => {
+      return (
+        category.some((item) => loggedInUser.interests.includes(item)) &&
+        !blockList.includes(loggedInUser.id)
+      );
     });
 
     console.log("filteredArticleData", filteredArticleData);
@@ -30,24 +41,81 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   }, [articles, category, users]);
 
   const likeButtonPress = (article) => {
-    console.log("article", article);
-    console.log("loggedInUser", loggedInUser);
-
-    // console.log(article.likes.include(loggedInUser.id));
-    // if (article.likes.include(loggedInUser.id)) {
-    //   console.log("why");
-    //   return;
-    // }
+    if (article.likes.includes(loggedInUser.id)) {
+      return;
+    }
 
     const newLikeList = [...article.likes, loggedInUser.id];
-    console.log("newLikeList", newLikeList);
+
+    if (article.dislikes.includes(loggedInUser.id)) {
+      var index = article.dislikes.indexOf(loggedInUser.id);
+
+      const newDislikeList = [
+        ...article.dislikes.slice(0, index),
+        ...article.dislikes.slice(index + 1),
+      ];
+
+      const value = { dislikes: newDislikeList, likes: newLikeList };
+
+      articleUpdate(article._id, value);
+      return;
+    }
+
+    const value = { likes: newLikeList };
+
+    articleUpdate(article._id, value);
+  };
+
+  const dislikeButtonPress = (article) => {
+    if (article.dislikes.includes(loggedInUser.id)) {
+      return;
+    }
+
+    const newDislikeList = [...article.dislikes, loggedInUser.id];
+
+    if (article.likes.includes(loggedInUser.id)) {
+      var index = article.likes.indexOf(loggedInUser.id);
+
+      const newLikeList = [
+        ...article.likes.slice(0, index),
+        ...article.likes.slice(index + 1),
+      ];
+
+      const value = { dislikes: newDislikeList, likes: newLikeList };
+
+      articleUpdate(article._id, value);
+      return;
+    }
+
+    const value = { dislikes: newDislikeList };
+
+    articleUpdate(article._id, value);
+  };
+
+  const blockButtonPress = (article) => {
+    if (article.blockList.includes(loggedInUser.id)) {
+      return;
+    }
+
+    const newBlockList = [...article.blockList, loggedInUser.id];
+    const value = { blockList: newBlockList };
+    articleUpdate(article._id, value);
   };
 
   return (
     <div>
       {" "}
       {mappedArticles.map((article) => (
-        <div>
+        <div
+          onClick={() => {
+            navigate(article._id, {
+              state: {
+                article,
+                loggedInUser,
+              },
+            });
+          }}
+        >
           <div>
             <img src={article.img} alt="" />{" "}
           </div>
@@ -67,8 +135,21 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
               {" "}
               like {article.likes.length}{" "}
             </div>
-            <div> dislike {article.dislikes.length} </div>
-            <div>block</div>
+            <div
+              onClick={() => {
+                dislikeButtonPress(article);
+              }}
+            >
+              {" "}
+              dislike {article.dislikes.length}{" "}
+            </div>
+            <div
+              onClick={() => {
+                blockButtonPress(article);
+              }}
+            >
+              block
+            </div>
           </div>
           <hr />
         </div>

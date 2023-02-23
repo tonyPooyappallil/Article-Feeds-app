@@ -34,8 +34,7 @@ router.put('/', async (req, res) => {
     const { id, value } = req.body
     const filter = { _id: id }
     const update = value
-    await Article.findOneAndUpdate(filter, update)
-    const data = await Article.find()
+    const data = await Article.findOneAndUpdate(filter, update)
     return res.status(200).send({ data })
   } catch (err) {
     return res.status(400).send(err.message)

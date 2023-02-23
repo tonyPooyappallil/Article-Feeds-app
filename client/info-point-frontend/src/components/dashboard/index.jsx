@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext, UserContext } from "../../context";
 import ArticleWall from "./ArticleWall";
 import styled from "styled-components";
-import { redirect } from "react-router-dom";
 
 const Container = styled.div({
   display: "flex",
@@ -45,7 +44,6 @@ const Dashboard = () => {
         .get("https://busy-plum-bee-cuff.cyclic.app/article")
         .then(function (data) {
           setArticles(data.data.data);
-          console.log("article", data.data.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -54,7 +52,6 @@ const Dashboard = () => {
         .get("https://busy-plum-bee-cuff.cyclic.app/category")
         .then(function (data) {
           setCategory(data.data.data);
-          console.log("category", data.data.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -63,7 +60,6 @@ const Dashboard = () => {
         .get("https://busy-plum-bee-cuff.cyclic.app/user")
         .then(function (data) {
           setAllUsers(data.data.data);
-          console.log("all user", data.data.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -74,6 +70,25 @@ const Dashboard = () => {
   const logout = () => {
     localStorage.clear();
     navigate("/");
+  };
+
+  const articleUpdate = (id, value) => {
+    console.log();
+    axios
+      .put("https://busy-plum-bee-cuff.cyclic.app/article", {
+        id,
+        value,
+      })
+      .then(function (data) {
+        setArticles(data.data.data);
+        console.log("article", data.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert(
+          "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
+        );
+      });
   };
 
   if (!localUSer) {
@@ -99,6 +114,7 @@ const Dashboard = () => {
               category={category}
               users={allUsers}
               loggedInUser={localUSer}
+              articleUpdate={articleUpdate}
             ></ArticleWall>
           </ArticleWallDiv>
         </Container>
