@@ -1,53 +1,70 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { articleUpdate } from "../../utilities";
 
 const ArticleDetail = () => {
-  const {
-    state: { article: routedArticle, loggedInUser, category, users },
-  } = useLocation();
+  const navigate = useNavigate();
+  const localUser = JSON.parse(localStorage.getItem("user"));
+  if (!localUser) {
+    navigate("/");
+  }
+  console.log("localUser", localUser);
+  let { id: articleId } = useParams();
+  const [article, setArticle] = useState({});
+  const [category, setCategory] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
 
-  const [article, setArticle] = useState(routedArticle);
+  let processedCategoryObject = {};
+  category.forEach(({ _id, categoryName }) => {
+    processedCategoryObject[_id] = categoryName;
+  });
+  let processedUserObject = {};
+  allUsers.forEach(({ _id, firstName, lastName }) => {
+    processedUserObject[_id] = `${firstName} ${lastName}`;
+  });
 
   useEffect(() => {
-    let processedCategoryObject = {};
-    category.forEach(({ _id, categoryName }) => {
-      processedCategoryObject[_id] = categoryName;
-    });
-    let processedUserObject = {};
-    users.forEach(({ _id, firstName, lastName }) => {
-      processedUserObject[_id] = `${firstName} ${lastName}`;
-    });
+    console.log("coming");
+    const dataFetch = async () => {
+      axios
+        .get(`https://busy-plum-bee-cuff.cyclic.app/article/${articleId}`)
+        .then(function (data) {
+          setArticle(data.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      axios
+        .get("https://busy-plum-bee-cuff.cyclic.app/category")
+        .then(function (data) {
+          setCategory(data.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      axios
+        .get("https://busy-plum-bee-cuff.cyclic.app/user")
+        .then(function (data) {
+          setAllUsers(data.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+    dataFetch();
+    console.log("ddd");
   }, []);
 
-  const articleUpdate = async (id, value) => {
-    console.log();
-    axios
-      .put("https://busy-plum-bee-cuff.cyclic.app/article", {
-        id,
-        value,
-      })
-      .then(function (data) {
-        setArticle(data.data.data);
-        console.log("article", data.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(
-          "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
-        );
-      });
-  };
-
-  const likeButtonPress = (article) => {
-    if (article.likes.includes(loggedInUser.id)) {
+  const likeButtonPress = async (article) => {
+    if (article.likes.includes(localUser.id)) {
       return;
     }
 
-    const newLikeList = [...article.likes, loggedInUser.id];
+    const newLikeList = [...article.likes, localUser.id];
 
-    if (article.dislikes.includes(loggedInUser.id)) {
-      var index = article.dislikes.indexOf(loggedInUser.id);
+    if (article.dislikes.includes(localUser.id)) {
+      var index = article.dislikes.indexOf(localUser.id);
 
       const newDislikeList = [
         ...article.dislikes.slice(0, index),
@@ -56,24 +73,28 @@ const ArticleDetail = () => {
 
       const value = { dislikes: newDislikeList, likes: newLikeList };
 
-      articleUpdate(article._id, value);
+      const data = await articleUpdate(article._id, value);
+      console.log("data", data);
+      setArticle({ ...data[0] });
+
       return;
     }
 
     const value = { likes: newLikeList };
 
-    articleUpdate(article._id, value);
+    const data = await articleUpdate(article._id, value);
+    setArticle({ ...data[0] });
   };
 
-  const dislikeButtonPress = (article) => {
-    if (article.dislikes.includes(loggedInUser.id)) {
+  const dislikeButtonPress = async (article) => {
+    if (article.dislikes.includes(localUser.id)) {
       return;
     }
 
-    const newDislikeList = [...article.dislikes, loggedInUser.id];
+    const newDislikeList = [...article.dislikes, localUser.id];
 
-    if (article.likes.includes(loggedInUser.id)) {
-      var index = article.likes.indexOf(loggedInUser.id);
+    if (article.likes.includes(localUser.id)) {
+      var index = article.likes.indexOf(localUser.id);
 
       const newLikeList = [
         ...article.likes.slice(0, index),
@@ -82,26 +103,33 @@ const ArticleDetail = () => {
 
       const value = { dislikes: newDislikeList, likes: newLikeList };
 
-      articleUpdate(article._id, value);
+      const data = await articleUpdate(article._id, value);
+      setArticle({ ...data[0] });
       return;
     }
 
     const value = { dislikes: newDislikeList };
 
-    articleUpdate(article._id, value);
+    const data = await articleUpdate(article._id, value);
+    setArticle({ ...data[0] });
   };
 
-  const blockButtonPress = (article) => {
-    if (article.blockList.includes(loggedInUser.id)) {
+  const blockButtonPress = async (article) => {
+    if (article.blockList.includes(localUser.id)) {
       return;
     }
 
-    const newBlockList = [...article.blockList, loggedInUser.id];
+    const newBlockList = [...article.blockList, localUser.id];
     const value = { blockList: newBlockList };
-    articleUpdate(article._id, value);
+
+    await articleUpdate(article._id, value);
+    navigate("/dashboard");
   };
 
-  console.log("article", article.likes);
+  if (!article.title) {
+    return <div>loader</div>;
+  }
+
   return (
     <div>
       <div>
@@ -113,8 +141,8 @@ const ArticleDetail = () => {
       </div>
       <div>{article.description}</div>
       <div>
-        <div> {article.author} </div>
-        <div> {article.category} </div>
+        <div> {processedUserObject[article.author]} </div>
+        <div> {processedCategoryObject[article.category]} </div>
         <div
           onClick={() => {
             likeButtonPress(article);

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext, UserContext } from "../../context";
 import ArticleWall from "./ArticleWall";
 import styled from "styled-components";
+import LeftNav from "./LeftNav";
 
 const Container = styled.div({
   display: "flex",
@@ -12,7 +13,7 @@ const Container = styled.div({
   margin: "auto",
 });
 
-const LeftNav = styled.div({
+const LeftNavContainer = styled.div({
   width: "20%",
   backgroundColor: "white",
   border: "1px solid black",
@@ -72,29 +73,10 @@ const Dashboard = () => {
     navigate("/");
   };
 
-  const articleUpdate = (id, value) => {
-    console.log();
-    axios
-      .put("https://busy-plum-bee-cuff.cyclic.app/article", {
-        id,
-        value,
-      })
-      .then(function (data) {
-        setArticles(data.data.data);
-        console.log("article", data.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(
-          "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
-        );
-      });
-  };
-
   if (!localUSer) {
-    console.log("inside");
     navigate("/");
   }
+
   return (
     <div>
       <div>
@@ -107,14 +89,15 @@ const Dashboard = () => {
         </div>
 
         <Container>
-          <LeftNav>left nav</LeftNav>
+          <LeftNavContainer>
+            <LeftNav></LeftNav>
+          </LeftNavContainer>
           <ArticleWallDiv>
             <ArticleWall
               articles={articles}
               category={category}
               users={allUsers}
               loggedInUser={localUSer}
-              articleUpdate={articleUpdate}
             ></ArticleWall>
           </ArticleWallDiv>
         </Container>
