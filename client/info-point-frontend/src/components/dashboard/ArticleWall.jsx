@@ -112,6 +112,8 @@ const ArticleWall = ({
               state: {
                 article,
                 loggedInUser,
+                category,
+                users,
               },
             });
           }}

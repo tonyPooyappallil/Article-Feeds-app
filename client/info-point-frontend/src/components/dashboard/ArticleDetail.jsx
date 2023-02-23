@@ -1,15 +1,26 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 const ArticleDetail = () => {
   const {
-    state: { article: routedArticle, loggedInUser },
+    state: { article: routedArticle, loggedInUser, category, users },
   } = useLocation();
 
   const [article, setArticle] = useState(routedArticle);
 
-  const articleUpdate = (id, value) => {
+  useEffect(() => {
+    let processedCategoryObject = {};
+    category.forEach(({ _id, categoryName }) => {
+      processedCategoryObject[_id] = categoryName;
+    });
+    let processedUserObject = {};
+    users.forEach(({ _id, firstName, lastName }) => {
+      processedUserObject[_id] = `${firstName} ${lastName}`;
+    });
+  }, []);
+
+  const articleUpdate = async (id, value) => {
     console.log();
     axios
       .put("https://busy-plum-bee-cuff.cyclic.app/article", {
@@ -89,6 +100,8 @@ const ArticleDetail = () => {
     const value = { blockList: newBlockList };
     articleUpdate(article._id, value);
   };
+
+  console.log("article", article.likes);
   return (
     <div>
       <div>
