@@ -33,9 +33,14 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
     console.log("article", article);
     console.log("loggedInUser", loggedInUser);
 
-    if (article.likes.include(loggedInUser.id)) {
-      return;
-    }
+    // console.log(article.likes.include(loggedInUser.id));
+    // if (article.likes.include(loggedInUser.id)) {
+    //   console.log("why");
+    //   return;
+    // }
+
+    const newLikeList = [...article.likes, loggedInUser.id];
+    console.log("newLikeList", newLikeList);
   };
 
   return (

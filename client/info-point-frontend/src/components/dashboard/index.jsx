@@ -75,6 +75,7 @@ const Dashboard = () => {
     localStorage.clear();
     navigate("/");
   };
+
   if (!localUSer) {
     console.log("inside");
     navigate("/");

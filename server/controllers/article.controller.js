@@ -31,9 +31,9 @@ router.get('/:id', async (req, res) => {
 
 router.put('/', async (req, res) => {
   try {
-    const { id, likes } = req.body
+    const { id, value } = req.body
     const filter = { _id: id }
-    const update = { likes }
+    const update = value
     await Article.findOneAndUpdate(filter, update)
     const data = await Article.find()
     return res.status(200).send({ data })
