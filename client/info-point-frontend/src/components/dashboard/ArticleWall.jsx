@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-const ArticleWall = ({ articles, category, users }) => {
+const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   const [mappedArticles, setmappedArticles] = useState([]);
-  console.log("articles, category, user", articles, category, users);
   useEffect(() => {
     let processedCategoryObject = {};
     category.forEach(({ _id, categoryName }) => {
       processedCategoryObject[_id] = categoryName;
     });
-    console.log("processedCategoryObject", processedCategoryObject);
     let processedUserObject = {};
     users.forEach(({ _id, firstName, lastName }) => {
       processedUserObject[_id] = `${firstName} ${lastName}`;
     });
-    console.log("processedUserObject", processedUserObject);
 
-    const mappedArticleData = articles.map((item) => {
+    const filteredArticleData = articles.filter(({ category }) => {
+      return category.some((item) => loggedInUser.interests.includes(item));
+    });
+
+    console.log("filteredArticleData", filteredArticleData);
+
+    const mappedArticleData = filteredArticleData.map((item) => {
       return {
         ...item,
         author: processedUserObject[item.author],
@@ -25,6 +28,15 @@ const ArticleWall = ({ articles, category, users }) => {
     setmappedArticles(mappedArticleData);
     console.log("mappedArticleData", mappedArticleData);
   }, [articles, category, users]);
+
+  const likeButtonPress = (article) => {
+    console.log("article", article);
+    console.log("loggedInUser", loggedInUser);
+
+    if (article.likes.include(loggedInUser.id)) {
+      return;
+    }
+  };
 
   return (
     <div>
@@ -42,7 +54,14 @@ const ArticleWall = ({ articles, category, users }) => {
           <div>
             <div> {article.author} </div>
             <div> {article.category} </div>
-            <div> like {article.likes.length} </div>
+            <div
+              onClick={() => {
+                likeButtonPress(article);
+              }}
+            >
+              {" "}
+              like {article.likes.length}{" "}
+            </div>
             <div> dislike {article.dislikes.length} </div>
             <div>block</div>
           </div>

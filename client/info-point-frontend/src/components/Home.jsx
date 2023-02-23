@@ -36,6 +36,7 @@ const Home = () => {
         setUserData(response.data);
         setLogin(true);
         localStorage.setItem("user", JSON.stringify(response.data));
+        setUserContext(response.data);
         navigate("/dashboard", {
           state: { user: { ...response.data }, category: category },
         });
@@ -60,10 +61,6 @@ const Home = () => {
         });
     };
     dataFetch();
-
-    const items = JSON.parse(localStorage.getItem("user"));
-    console.log("items", items);
-    setUserContext({ ...items });
   }, []);
 
   const signUpSubmit = async (e) => {
