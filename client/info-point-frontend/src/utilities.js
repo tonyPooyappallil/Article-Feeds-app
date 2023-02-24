@@ -7,7 +7,6 @@ export const articleUpdate = async (id, value) => {
       value
     })
     .then(function (data) {
-      console.log('returnng', data)
       let actualData = data.data.data
       return actualData
     })
@@ -17,7 +16,6 @@ export const articleUpdate = async (id, value) => {
         'Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up'
       )
     })
-  console.log('going to return')
   return data
 }
 
@@ -28,6 +26,7 @@ export const userUpdate = async (id, value) => {
       value
     })
     .then(function (data) {
+      console.log('data', data)
       let actualData = data.data.data
       return actualData
     })
@@ -37,6 +36,5 @@ export const userUpdate = async (id, value) => {
         'Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up'
       )
     })
-  console.log('going to return')
   return data
 }
