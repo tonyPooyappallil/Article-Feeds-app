@@ -26,7 +26,8 @@ userSchema.pre('save', function (next) {
   return next()
 })
 
-userSchema.pre('findOneAndUpdate', async function (next) {
+userSchema.pre('findOneAndUpdate', function (next) {
+  if (!this.password) return next()
   const salt = bcrypt.genSaltSync(10)
   const hashedPassword = bcrypt.hashSync(this.password, salt)
   this.password = hashedPassword
