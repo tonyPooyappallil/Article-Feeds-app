@@ -96,7 +96,6 @@ router.put('/', async (req, res) => {
       articles
     } = data
     return res.status(200).send({
-      success: true,
       firstName,
       lastName,
       dateOfBirth,
