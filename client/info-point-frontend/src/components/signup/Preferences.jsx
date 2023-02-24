@@ -12,7 +12,6 @@ const CategoryButton = styled.div`
 `;
 
 const Preferences = ({ category = [], catSelected, selectedCategory = [] }) => {
-  console.log("selectedCategory", selectedCategory);
   return (
     <div>
       {category.map((item) => {

@@ -37,14 +37,12 @@ const Settings = () => {
       stateUpdater[id] = 1;
     });
     setEditedData((curr) => {
-      return { ...curr, category: { ...editedData.category, ...stateUpdater } };
+      return { ...curr, category: { ...curr.category, ...stateUpdater } };
     });
   }, []);
 
   const catSelected = (id) => {
-    console.log("in cat select id", id);
     if (editedData?.category && editedData.category[id]) {
-      console.log("inside her");
       let data = { ...editedData.category };
       delete data[id];
       setEditedData((curr) => {
@@ -52,8 +50,6 @@ const Settings = () => {
       });
       return;
     }
-
-    console.log("here befoew set", id);
 
     setEditedData((curr) => {
       return { ...curr, category: { ...(editedData.category || {}), [id]: 1 } };
@@ -79,15 +75,19 @@ const Settings = () => {
     }
 
     let dataToSubmit = { ...editedData, interests: finalCategoryList };
+    console.log("dataToSubmit.dateOfBirth", dataToSubmit.dateOfBirth);
+
     Object.keys(dataToSubmit).forEach((key) => {
-      if (isEmpty(dataToSubmit[key])) {
+      if (isEmpty(dataToSubmit[key]) && !dataToSubmit[key]) {
         delete dataToSubmit[key];
       }
     });
-    console.log("dataToSubmit", dataToSubmit);
+    console.log("user", user);
     const data = await userUpdate(user.id, dataToSubmit);
+    console.log("data", data);
     setUser(data);
     localStorage.setItem("user", JSON.stringify(data));
+    setEditToggle(false);
   };
 
   return (
@@ -173,17 +173,17 @@ const Settings = () => {
         {editToggle ? (
           <div>
             <DatePicker
-              format="y-MM-dd"
+              format="dd-MM-y"
               value={editedData.dateOfBirth}
-              onChange={(e) => {
+              onChange={(date) => {
                 setEditedData((data) => {
-                  return { ...data, dateOfBirth: e };
+                  return { ...data, dateOfBirth: date };
                 });
               }}
             />
           </div>
         ) : (
-          <div> : {moment.utc(user.dateOfBirth).format("DD/MM/YY")} </div>
+          <div> : {moment(user.dateOfBirth).format("DD/MM/YY")} </div>
         )}
       </div>
       {editToggle && (
@@ -191,7 +191,7 @@ const Settings = () => {
           <Preferences
             category={category}
             catSelected={catSelected}
-            selectedCategory={Object.keys(editedData.category)}
+            selectedCategory={Object.keys(editedData.category || {})}
           ></Preferences>
         </div>
       )}
