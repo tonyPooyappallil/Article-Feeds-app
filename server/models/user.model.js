@@ -26,12 +26,16 @@ userSchema.pre('save', function (next) {
   return next()
 })
 
-userSchema.pre('findOneAndUpdate', function (next) {
-  if (!this.password) return next()
-  const salt = bcrypt.genSaltSync(10)
-  const hashedPassword = bcrypt.hashSync(this.password, salt)
-  this.password = hashedPassword
-  return next()
+UsersSchema.pre('findOneAndUpdate', async function (next) {
+  try {
+    if (this._update.password) {
+      const hashed = await bcrypt.hash(this._update.password, 10)
+      this._update.password = hashed
+    }
+    next()
+  } catch (err) {
+    return next(err)
+  }
 })
 
 userSchema.methods.verifyPassword = function (password) {
