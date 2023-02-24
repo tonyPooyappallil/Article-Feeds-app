@@ -85,7 +85,27 @@ router.put('/', async (req, res) => {
     const update = value
     await User.findOneAndUpdate(filter, update)
     const data = await User.find(filter)
-    return res.status(200).send({ data })
+    const {
+      firstName,
+      lastName,
+      dateOfBirth,
+      _id,
+      email,
+      mobileNum,
+      interests,
+      articles
+    } = data
+    return res.status(200).send({
+      success: true,
+      firstName,
+      lastName,
+      dateOfBirth,
+      id: _id,
+      email,
+      mobileNum,
+      interests,
+      articles
+    })
   } catch (err) {
     return res.status(400).send(err.message)
   }

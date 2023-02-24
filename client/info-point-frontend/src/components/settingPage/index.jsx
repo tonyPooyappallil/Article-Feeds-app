@@ -78,14 +78,15 @@ const Settings = () => {
       return;
     }
 
-    let dataToSubmit = { ...editedData, category: finalCategoryList };
+    let dataToSubmit = { ...editedData, interests: finalCategoryList };
     Object.keys(dataToSubmit).forEach((key) => {
       if (isEmpty(dataToSubmit[key])) {
         delete dataToSubmit[key];
       }
     });
     console.log("dataToSubmit", dataToSubmit);
-    userUpdate(user.id, dataToSubmit);
+    const data = await userUpdate(user.id, dataToSubmit);
+    console.log("data", data[0]);
   };
 
   return (
