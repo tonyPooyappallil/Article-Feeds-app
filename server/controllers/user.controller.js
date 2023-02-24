@@ -84,7 +84,8 @@ router.put('/', async (req, res) => {
     const filter = { _id: id }
     const update = value
     await User.findOneAndUpdate(filter, update)
-    const data = await User.find(filter)
+    const data = await User.findOne(filter)
+
     console.log('data', data)
     const {
       firstName,
