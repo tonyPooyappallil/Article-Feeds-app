@@ -26,8 +26,7 @@ export const userUpdate = async (id, value) => {
       value
     })
     .then(function (data) {
-      console.log('data', data)
-      let actualData = data.data.data
+      let actualData = data.data
       return actualData
     })
     .catch(function (error) {

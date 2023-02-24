@@ -86,7 +86,6 @@ const Settings = () => {
     });
     console.log("dataToSubmit", dataToSubmit);
     const data = await userUpdate(user.id, dataToSubmit);
-    console.log("data", data[0]);
     setUser(data);
     localStorage.setItem("user", JSON.stringify(data));
   };
