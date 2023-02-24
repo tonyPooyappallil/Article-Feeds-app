@@ -1,11 +1,29 @@
 import React from "react";
 
-const Preferences = ({ category, catSelected }) => {
+import styled from "styled-components";
+
+const CategoryButton = styled.div`
+  background-color: ${(props) => (props.selected ? "#bdbdbd" : "#ffffff")};
+  display: inline-block;
+  margin: 10px;
+  padding: 6px;
+  border: solid 1px black;
+  border-radius: 20px;
+`;
+
+const Preferences = ({ category = [], catSelected, selectedCategory = [] }) => {
+  console.log("selectedCategory", selectedCategory);
   return (
     <div>
       {category.map((item) => {
         return (
-          <div onClick={() => catSelected(item._id)}> {item.categoryName}</div>
+          <CategoryButton
+            selected={selectedCategory.includes(item._id)}
+            onClick={() => catSelected(item._id)}
+          >
+            {" "}
+            {item.categoryName}
+          </CategoryButton>
         );
       })}{" "}
     </div>

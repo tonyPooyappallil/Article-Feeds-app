@@ -150,7 +150,7 @@ const Home = () => {
             <label>
               Password:
               <input
-                type="text"
+                type="password"
                 name="name"
                 value={password}
                 onChange={({ target: { value } }) => setPassword(value)}
@@ -214,7 +214,7 @@ const Home = () => {
             <label>
               Password:
               <input
-                type="text"
+                type="password"
                 name="name"
                 value={password}
                 onChange={({ target: { value } }) => setPassword(value)}
@@ -225,7 +225,7 @@ const Home = () => {
               <div>
                 {" "}
                 <input
-                  type="text"
+                  type="password"
                   name="name"
                   value={confirmedPassword}
                   onChange={({ target: { value } }) => {
@@ -240,7 +240,11 @@ const Home = () => {
                 {passwordMismatch && <div>Passwords mismatch!</div>}
               </div>
             </label>
-            <Preferences category={category} catSelected={catSelected} />
+            <Preferences
+              category={category}
+              catSelected={catSelected}
+              selectedCategory={Object.keys(selectedCategory)}
+            />
             <input type="submit" value="Submit" />
           </form>
         </div>
