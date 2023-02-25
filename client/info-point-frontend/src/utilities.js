@@ -1,4 +1,5 @@
 import axios from 'axios'
+import useWindowSize from 'windowsize-hook-react'
 
 export const articleUpdate = async (id, value) => {
   let data = axios
@@ -70,4 +71,8 @@ export const articleDelete = async id => {
       )
     })
   return data
+}
+export const useIsMobile = () => {
+  const { width } = useWindowSize()
+  return width < 450
 }
