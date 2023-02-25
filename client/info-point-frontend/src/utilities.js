@@ -55,3 +55,18 @@ export const articleCreate = async value => {
     })
   return data
 }
+
+export const articleDelete = async id => {
+  let data = axios
+    .delete(`https://busy-plum-bee-cuff.cyclic.app/article/${id}`)
+    .then(function () {
+      return
+    })
+    .catch(function (error) {
+      console.log(error)
+      alert(
+        'Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up'
+      )
+    })
+  return data
+}

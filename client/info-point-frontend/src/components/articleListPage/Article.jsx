@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import { articleDelete } from "../../utilities";
 
 const Article = ({ article = [] }) => {
   const [showWarning, setShowWarning] = useState(false);
+  const deleteArticle = async () => {
+    const { _id: id } = article;
 
+    await articleDelete(id);
+  };
   return (
     <div>
       <div>
@@ -49,7 +54,13 @@ const Article = ({ article = [] }) => {
               <div>
                 This cannot be undone, are you sure about deleting this Article?
               </div>
-              <button>Yes</button>
+              <button
+                onClick={() => {
+                  deleteArticle();
+                }}
+              >
+                Yes
+              </button>
               <button
                 onClick={() => {
                   setShowWarning(false);
