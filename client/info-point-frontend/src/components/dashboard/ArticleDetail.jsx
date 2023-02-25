@@ -142,7 +142,24 @@ const ArticleDetail = () => {
       <div>{article.description}</div>
       <div>
         <div> {processedUserObject[article.author]} </div>
-        <div> {processedCategoryObject[article.category]} </div>
+        <div>
+          {" "}
+          {article.category.map((category) => (
+            <>{processedCategoryObject[category]}</>
+          ))}{" "}
+        </div>
+        <div>
+          {article.tags.length ? (
+            <div>
+              Tags :
+              {article.tags.map((tag) => (
+                <span>{tag}</span>
+              ))}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
         <div
           onClick={() => {
             likeButtonPress(article);

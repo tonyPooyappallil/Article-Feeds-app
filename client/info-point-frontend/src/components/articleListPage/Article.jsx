@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Article = ({ article = {}, deleteArticle }) => {
   const [showWarning, setShowWarning] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div>
       <div>
@@ -33,6 +34,15 @@ const Article = ({ article = {}, deleteArticle }) => {
           {article.tags.map((tag) => (
             <span>{tag}</span>
           ))}
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              navigate(`edit/${article._id}`);
+            }}
+          >
+            Edit this Article
+          </button>
         </div>
         <div>
           <div>

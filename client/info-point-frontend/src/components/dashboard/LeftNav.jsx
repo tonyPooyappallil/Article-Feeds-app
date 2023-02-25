@@ -6,7 +6,7 @@ const LeftNav = () => {
 
   return (
     <div>
-      LeftNav
+      <h1>LeftNav</h1>
       <div
         onClick={() => {
           navigate("/create-new-article");
