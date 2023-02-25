@@ -45,7 +45,7 @@ router.put('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id = '' } = req.params
-    await Article.deleteOne({ id }).lean().exec()
+    await Article.deleteOne({ _id: id }).lean().exec()
     const data = await Article.find()
     return res.status(200).send({ data })
   } catch (err) {

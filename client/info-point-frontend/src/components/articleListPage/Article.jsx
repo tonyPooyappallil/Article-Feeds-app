@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { articleDelete } from "../../utilities";
 
-const Article = ({ article = [] }) => {
+const Article = ({ article = {}, deleteArticle }) => {
   const [showWarning, setShowWarning] = useState(false);
-  const deleteArticle = async () => {
-    const { _id: id } = article;
 
-    await articleDelete(id);
-  };
   return (
     <div>
       <div>
@@ -56,7 +51,7 @@ const Article = ({ article = [] }) => {
               </div>
               <button
                 onClick={() => {
-                  deleteArticle();
+                  deleteArticle(article._id);
                 }}
               >
                 Yes

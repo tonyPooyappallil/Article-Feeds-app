@@ -59,8 +59,9 @@ export const articleCreate = async value => {
 export const articleDelete = async id => {
   let data = axios
     .delete(`https://busy-plum-bee-cuff.cyclic.app/article/${id}`)
-    .then(function () {
-      return
+    .then(function (data) {
+      let actualData = data.data.data
+      return actualData
     })
     .catch(function (error) {
       console.log(error)
