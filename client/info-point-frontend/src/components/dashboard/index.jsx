@@ -5,6 +5,7 @@ import { AppContext, UserContext } from "../../context";
 import ArticleWall from "./ArticleWall";
 import styled from "styled-components";
 import LeftNav from "./LeftNav";
+import { MyButton } from "../customStyledCompnents";
 
 const Container = styled.div({
   display: "flex",
@@ -24,12 +25,29 @@ const LeftNavContainer = styled.div({
 });
 
 const ArticleWallDiv = styled.div({
-  width: "80%",
-  marginLeft: "1.5%",
+  width: "85%",
   img: {
     width: "100%",
   },
 });
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  padding: 5px;
+  position: sticky;
+  top: 0;
+  background-color: #6fa4ff;
+`;
+
+const UserNameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 26px;
+  padding: 15px;
+`;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -86,13 +104,14 @@ const Dashboard = () => {
             <LeftNav></LeftNav>
           </LeftNavContainer>
           <ArticleWallDiv>
-            <div>
-              <h2>InfoPoint</h2>{" "}
+            <ProfileContainer>
+              <UserNameContainer>
+                <span>Hey {user.firstName || localUSer.firstName} !</span>{" "}
+              </UserNameContainer>
               <div>
-                <span>{user.firstName || localUSer.firstName}</span>{" "}
-                <button onClick={() => logout()}>logout</button>{" "}
+                <MyButton onClick={() => logout()}>logout</MyButton>{" "}
               </div>
-            </div>
+            </ProfileContainer>
             <ArticleWall
               articles={articles}
               category={category}

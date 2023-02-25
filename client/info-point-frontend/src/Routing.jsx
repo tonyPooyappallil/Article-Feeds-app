@@ -9,18 +9,26 @@ import Settings from "./components/settingPage";
 import CreateArticle from "./components/createArticle";
 import ArticleList from "./components/articleListPage";
 import EditArticle from "./components/editArticle/EditArticle";
+import Layout from "./components/layout";
 
-function Routing() {
-  return (
+const WithNavbar = () => (
+  <Layout>
     <Routes>
-      <Route exact path="/" element={<Home />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />}></Route>
       <Route path="/dashboard/:id" element={<ArticleDetail />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/create-new-article" element={<CreateArticle />} />
       <Route exact path="/article-list-page" element={<ArticleList />}></Route>
       <Route path="/article-list-page/edit/:id" element={<EditArticle />} />
+    </Routes>
+  </Layout>
+);
 
+function Routing() {
+  return (
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route element={<WithNavbar />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
