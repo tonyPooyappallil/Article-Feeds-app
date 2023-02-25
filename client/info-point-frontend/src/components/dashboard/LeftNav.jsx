@@ -9,6 +9,20 @@ const LeftNav = () => {
       LeftNav
       <div
         onClick={() => {
+          navigate("/create-new-article");
+        }}
+      >
+        Post New Article
+      </div>
+      <div
+        onClick={() => {
+          navigate("/article-list-page");
+        }}
+      >
+        My Articles
+      </div>
+      <div
+        onClick={() => {
           navigate("/settings");
         }}
       >

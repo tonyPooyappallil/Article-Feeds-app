@@ -6,6 +6,8 @@ import NotFound from "./components/NotFound";
 import Dashboard from "./components/dashboard";
 import ArticleDetail from "./components/dashboard/ArticleDetail";
 import Settings from "./components/settingPage";
+import CreateArticle from "./components/createArticle";
+import ArticleList from "./components/articleListPage";
 
 function Routing() {
   return (
@@ -14,6 +16,8 @@ function Routing() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/:id" element={<ArticleDetail />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/create-new-article" element={<CreateArticle />} />
+      <Route path="/article-list-page" element={<ArticleList />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

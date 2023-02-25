@@ -37,3 +37,21 @@ export const userUpdate = async (id, value) => {
     })
   return data
 }
+
+export const articleCreate = async value => {
+  let data = axios
+    .post('https://busy-plum-bee-cuff.cyclic.app/article', {
+      ...value
+    })
+    .then(function (data) {
+      let actualData = data.data
+      return actualData
+    })
+    .catch(function (error) {
+      console.log(error)
+      alert(
+        'Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up'
+      )
+    })
+  return data
+}

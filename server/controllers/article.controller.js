@@ -42,4 +42,13 @@ router.put('/', async (req, res) => {
   }
 })
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await Article.deleteOne(id).lean().exec()
+  } catch (err) {
+    return res.status(400).send(err.message)
+  }
+})
+
 module.exports = router
