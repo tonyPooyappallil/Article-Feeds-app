@@ -32,7 +32,7 @@ const Home = () => {
   const [lastName, setLastName] = useState("");
   const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
-  const [setUserData] = useState({});
+  const [userData, setUserData] = useState({});
   const { setLogin } = useContext(AppContext);
   const { setUserContext } = useContext(UserContext);
   const isMobile = useIsMobile();
