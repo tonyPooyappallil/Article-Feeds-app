@@ -1,11 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { articleUpdate } from "../../utilities";
+import { articleUpdate, useIsMobile } from "../../utilities";
+import styled from "styled-components";
+import {
+  anotherLike,
+  blockButton,
+  dislikeButton,
+  likeButton,
+  newLike,
+} from "../../svgExports";
+import { MainContainer } from "../customStyledCompnents";
 
 const ArticleDetail = () => {
   const navigate = useNavigate();
   const localUser = JSON.parse(localStorage.getItem("user"));
+  const isMobile = useIsMobile();
+
   if (!localUser) {
     navigate("/");
   }
@@ -55,6 +66,14 @@ const ArticleDetail = () => {
     dataFetch();
     console.log("ddd");
   }, []);
+
+  const getUserReactionStatus = (data) => {
+    console.log("data", data);
+    if (data.includes(localUser.id)) {
+      return "blue";
+    }
+    return "black";
+  };
 
   const likeButtonPress = async (article) => {
     if (article.likes.includes(localUser.id)) {
@@ -131,7 +150,7 @@ const ArticleDetail = () => {
   }
 
   return (
-    <div>
+    <MainContainer>
       <div>
         <img src={article.img} alt="" />{" "}
       </div>
@@ -141,52 +160,147 @@ const ArticleDetail = () => {
       </div>
       <div>{article.description}</div>
       <div>
-        <div> {processedUserObject[article.author]} </div>
-        <div>
-          {" "}
-          {article.category.map((category) => (
-            <>{processedCategoryObject[category]}</>
-          ))}{" "}
-        </div>
-        <div>
-          {article.tags.length ? (
+        <ReactionContainer>
+          <LikeContainer
+            onClick={() => {
+              likeButtonPress(article);
+            }}
+          >
+            <div> {likeButton(getUserReactionStatus(article.likes))} </div>{" "}
+            <div> {article.likes.length} </div>
+          </LikeContainer>
+          <LikeContainer
+            onClick={() => {
+              dislikeButtonPress(article);
+            }}
+          >
+            <div>{dislikeButton(getUserReactionStatus(article.dislikes))}</div>{" "}
+            <div>{article.dislikes.length} </div>
+          </LikeContainer>
+          <LikeContainer
+            onClick={() => {
+              blockButtonPress(article);
+            }}
+          >
+            <div>{blockButton}</div> <div>Block this Article </div>
+          </LikeContainer>
+        </ReactionContainer>
+        <AuthorContainer>
+          <div>
+            <h4>Author</h4>
+          </div>
+          <div> {processedUserObject[article.author]}</div>
+        </AuthorContainer>
+
+        <CatTagContainer>
+          <div>
             <div>
-              Tags :
-              {article.tags.map((tag) => (
-                <span>{tag}</span>
+              {" "}
+              <h4>Category</h4>{" "}
+            </div>
+            <div>
+              {article.category.map((category, index) => (
+                <>
+                  {processedCategoryObject[category]}
+                  {index === article.category.length - 1 ? "" : ",  "}
+                </>
               ))}
             </div>
-          ) : (
-            ""
-          )}
-        </div>
-        <div
-          onClick={() => {
-            likeButtonPress(article);
-          }}
-        >
-          {" "}
-          like {article.likes.length}{" "}
-        </div>
-        <div
-          onClick={() => {
-            dislikeButtonPress(article);
-          }}
-        >
-          {" "}
-          dislike {article.dislikes.length}{" "}
-        </div>
-        <div
-          onClick={() => {
-            blockButtonPress(article);
-          }}
-        >
-          block
-        </div>
+          </div>
+          <div>
+            <div>
+              <h4>Tags</h4>
+            </div>
+            <div>
+              {article.tags.length ? (
+                <div>
+                  {article.tags.map((tag, index) => (
+                    <span>
+                      {tag}
+                      {index === article.tags.length - 1 ? "" : ",    "}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </CatTagContainer>
       </div>
-      <hr />
-    </div>
+    </MainContainer>
   );
 };
 
 export default ArticleDetail;
+
+//  padding: ${(props) => (props.isMobile ? "5px" : "15px")};
+
+const ReactionContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
+  > div {
+    padding: 20px;
+    > div {
+      padding: 3px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      :nth-child(1):hover {
+        padding-right: 8px;
+      }
+    }
+  }
+`;
+
+const LikeContainer = styled.div`
+  /* background-color: black; */
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+const AuthorContainer = styled.div`
+  /* background-color: black; */
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  background-color: #e6e6e6;
+  width: 25%;
+  min-width: 200px;
+  border-radius: 20px;
+  div {
+    padding: 10px;
+    font-weight: 400;
+  }
+  margin: 4px;
+`;
+
+const CatTagContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    background-color: #e6e6e6;
+    border-radius: 20px;
+    padding: 3px;
+    font-weight: 400;
+    margin: 4px;
+    div {
+      padding: 3px;
+    }
+  }
+`;

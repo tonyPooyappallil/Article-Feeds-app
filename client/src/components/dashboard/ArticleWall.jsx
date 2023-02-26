@@ -52,15 +52,20 @@ const ArticleWallContainer = styled.div`
   grid-template-columns: ${(props) => (props.isMobile ? "" : "auto auto auto")};
   background-color: #ffffff;
   color: black;
+
   > div {
-    border: 2px solid #eeeeee;
+    border: 2px solid #e6e6e6;
+    cursor: pointer;
+    :hover {
+      padding-right: 2px;
+    }
     div:nth-of-type(3) {
       margin-top: -10px;
     }
   }
   div {
     margin: 10px;
-    background-color: #eaeaee;
+    background-color: #e6e6e6;
     padding: 5px;
     border-radius: 15px;
   }

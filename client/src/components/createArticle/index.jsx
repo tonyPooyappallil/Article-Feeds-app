@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { articleCreate } from "../../utilities";
 import ArticleForm from "../articleFrom";
+import { ArticleFormContainer } from "../customStyledCompnents";
 
 const CreateArticle = () => {
   const localUSer = JSON.parse(localStorage.getItem("user"));
@@ -11,12 +12,12 @@ const CreateArticle = () => {
   }
 
   return (
-    <div>
+    <ArticleFormContainer>
       <ArticleForm
         existingArticle={{}}
         dataPoster={articleCreate}
       ></ArticleForm>{" "}
-    </div>
+    </ArticleFormContainer>
   );
 };
 

@@ -5,10 +5,18 @@ import moment from "moment";
 import DatePicker from "react-date-picker";
 import Preferences from "../signup/Preferences";
 import { isEmpty } from "lodash";
-import { userUpdate } from "../../utilities";
+import { useIsMobile, userUpdate } from "../../utilities";
+import {
+  MainContainer,
+  MyButton,
+  MyInput,
+  SubmitButton,
+} from "../customStyledCompnents";
+import styled from "styled-components";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const localUser = JSON.parse(localStorage.getItem("user"));
   if (!localUser) {
     navigate("/");
@@ -91,15 +99,25 @@ const Settings = () => {
   };
 
   return (
-    <div>
+    <MainContainer>
       <h2> Personal Details</h2>
-      <div onClick={() => setEditToggle((value) => !value)}>Edit</div>
-      <div>
+      <EditContainer>
+        <MyButton
+          backgroundColor={editToggle ? "#00a41e" : "#2d78fa"}
+          color="white"
+          onClick={() => setEditToggle((value) => !value)}
+        >
+          Edit
+        </MyButton>
+      </EditContainer>
+
+      <DetailContainer>
         <div>First Name </div>
 
         {editToggle ? (
           <div>
-            <input
+            <MyInput
+              isMobile={isMobile}
               value={editedData.firstName}
               onChange={(e) => {
                 setEditedData((data) => {
@@ -112,12 +130,13 @@ const Settings = () => {
         ) : (
           <div> : {user.firstName} </div>
         )}
-      </div>
-      <div>
+      </DetailContainer>
+      <DetailContainer>
         <div>Last Name </div>
         {editToggle ? (
           <div>
-            <input
+            <MyInput
+              isMobile={isMobile}
               value={editedData.lastName}
               type="text"
               onChange={(e) => {
@@ -130,12 +149,13 @@ const Settings = () => {
         ) : (
           <div> : {user.lastName} </div>
         )}
-      </div>
-      <div>
+      </DetailContainer>
+      <DetailContainer>
         <div>Email </div>
         {editToggle ? (
           <div>
-            <input
+            <MyInput
+              isMobile={isMobile}
               value={editedData.email}
               type="text"
               onChange={(e) => {
@@ -148,12 +168,13 @@ const Settings = () => {
         ) : (
           <div> : {user.email} </div>
         )}
-      </div>
-      <div>
+      </DetailContainer>
+      <DetailContainer>
         <div>Mobile Number </div>
         {editToggle ? (
           <div>
-            <input
+            <MyInput
+              isMobile={isMobile}
               value={editedData.mobileNum}
               type="text"
               onChange={(e) => {
@@ -166,28 +187,27 @@ const Settings = () => {
         ) : (
           <div> : {user.mobileNum} </div>
         )}
-      </div>
-      <div>
-        <div>Date of Birth </div>
+      </DetailContainer>
+      <DatePickerContainer>
+        <span>Date of Birth </span>
 
         {editToggle ? (
-          <div>
-            <DatePicker
-              format="dd-MM-y"
-              value={editedData.dateOfBirth}
-              onChange={(date) => {
-                setEditedData((data) => {
-                  return { ...data, dateOfBirth: date };
-                });
-              }}
-            />
-          </div>
+          <DatePicker
+            format="dd-MM-y"
+            value={editedData.dateOfBirth}
+            onChange={(date) => {
+              setEditedData((data) => {
+                return { ...data, dateOfBirth: date };
+              });
+            }}
+          />
         ) : (
-          <div> : {moment(user.dateOfBirth).format("DD/MM/YY")} </div>
+          <span> : {moment(user.dateOfBirth).format("DD/MM/YY")} </span>
         )}
-      </div>
+      </DatePickerContainer>
       {editToggle && (
         <div>
+          <div style={{ "font-weight": "500" }}>Interested Categories</div>
           <Preferences
             category={category}
             catSelected={catSelected}
@@ -198,10 +218,11 @@ const Settings = () => {
       {editToggle && (
         <div>
           {" "}
-          <div>
+          <DetailContainer>
             <div>Password </div>
             <div>
-              <input
+              <MyInput
+                isMobile={isMobile}
                 value={editedData.password}
                 type="password"
                 onChange={(e) => {
@@ -211,11 +232,12 @@ const Settings = () => {
                 }}
               />
             </div>
-          </div>
-          <div>
+          </DetailContainer>
+          <DetailContainer>
             <div>Confirm Password</div>
             <div>
-              <input
+              <MyInput
+                isMobile={isMobile}
                 type="password"
                 value={editedData.confirmedPassword}
                 onChange={(e) => {
@@ -228,22 +250,61 @@ const Settings = () => {
                 }}
               />
             </div>
-          </div>
+          </DetailContainer>
         </div>
       )}
       {editToggle && (
         <div>
-          <button
+          <SubmitButton
             onClick={() => {
               onEditSubmit();
             }}
           >
             Submit
-          </button>
+          </SubmitButton>
         </div>
       )}
-    </div>
+    </MainContainer>
   );
 };
 
 export default Settings;
+
+const DetailContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  div {
+    padding: 9px;
+    border-radius: 12px;
+  }
+
+  /* * button {
+    margin: 5px;
+  } */
+`;
+// width: ${(props) => (props.isMobile ? "80%" : "75%")};
+// margin: auto;
+// div {
+//   width: ${(props) => (props.isMobile ? "140px" : "160px")};
+//   text-align: left;
+// }
+
+const DatePickerContainer = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  > :nth-child(1) {
+    padding: 15px;
+  }
+`;
+
+const EditContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+`;

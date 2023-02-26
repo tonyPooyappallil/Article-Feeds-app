@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { articleUpdate } from "../../utilities";
 import ArticleForm from "../articleFrom";
+import { ArticleFormContainer } from "../customStyledCompnents";
 
 const EditArticle = () => {
   let { id: articleId } = useParams();
@@ -32,12 +33,12 @@ const EditArticle = () => {
 
   console.log("article in edit main", article);
   return (
-    <div>
+    <ArticleFormContainer>
       <ArticleForm
         dataPoster={submitEdit}
         existingArticle={{ ...article }}
       ></ArticleForm>
-    </div>
+    </ArticleFormContainer>
   );
 };
 

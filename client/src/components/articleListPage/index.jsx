@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { articleDelete } from "../../utilities";
+import { MainContainer } from "../customStyledCompnents";
 import Article from "./Article";
 
 const authorArticleFilter = (articles, useId) => {
@@ -42,7 +43,9 @@ const ArticleList = () => {
       <h1>Your Articles</h1>
       <div>
         {articles.map((article) => (
-          <Article article={article} deleteArticle={deleteArticle}></Article>
+          <MainContainer>
+            <Article article={article} deleteArticle={deleteArticle}></Article>{" "}
+          </MainContainer>
         ))}
       </div>
     </div>

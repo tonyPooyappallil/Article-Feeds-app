@@ -3,10 +3,15 @@ import { isArray } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Preferences from "../signup/Preferences";
+import styled from "styled-components";
+import { MyInput, SubmitButton } from "../customStyledCompnents";
+import { useIsMobile } from "../../utilities";
 
 const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
   const localUSer = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
   if (!localUSer) {
     navigate("/");
   }
@@ -78,14 +83,13 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
   return (
     <div>
       <h1>
-        {" "}
         {!!Object.keys(existingArticle).length ? (
           <>Edit Article Details</>
         ) : (
           <> Post New Article</>
         )}
       </h1>
-      <div>
+      <InputMainContainer>
         <div>Title</div>
         <div>
           <textarea
@@ -96,11 +100,12 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             }}
           />
         </div>
-      </div>
-      <div>
+      </InputMainContainer>
+      <InputMainContainer>
         <div>Description</div>
         <div>
           <textarea
+            style={{ height: "100px" }}
             type="text"
             value={article.description}
             onChange={(e) => {
@@ -108,11 +113,13 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             }}
           />
         </div>
-      </div>
-      <div>
+      </InputMainContainer>
+      <InputMainContainer>
         <div>Img Link</div>
         <div>
-          <input
+          <MyInput
+            isMobile={isMobile}
+            placeholder="Link to the image you want to post."
             type="text"
             value={article.img}
             onChange={(e) => {
@@ -120,7 +127,7 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             }}
           />
         </div>
-      </div>
+      </InputMainContainer>
       <div>
         <Preferences
           category={category}
@@ -128,29 +135,47 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
           selectedCategory={Object.keys(article.category || [])}
         ></Preferences>
       </div>
-      <div>
+      <InputMainContainer>
         <div>Tags</div>
         <div>
           <textarea
             type="text"
             value={article.tags}
+            placeholder="Enter tags seperated by comma ex:( mytag, yourtag, theirtag )"
             onChange={(e) => {
               articleOnChange({ tags: e.target.value.trim() });
             }}
           />
         </div>
-      </div>
-      <div>
-        <button
+      </InputMainContainer>
+      <InputMainContainer>
+        <SubmitButton
           onClick={() => {
             submitArticle();
           }}
         >
           Submit
-        </button>
-      </div>
+        </SubmitButton>
+      </InputMainContainer>
     </div>
   );
 };
 
 export default ArticleForm;
+
+const InputMainContainer = styled.div`
+  padding: 2px;
+  padding-left: 6%;
+  padding-right: 6%;
+  div {
+    padding: 2px;
+  }
+  textarea {
+    width: 100%;
+    font-size: 14px;
+    :focus {
+      outline-style: outset;
+      outline-color: grey;
+    }
+  }
+`;

@@ -11,6 +11,23 @@ export const MyInput = styled.input`
   }
 `;
 
+export const SubmitButton = styled.button`
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #4d8fff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  :hover {
+    outline: none;
+    padding: 11px;
+    font-size: 15px;
+    background-color: #2d78fa;
+  }
+`;
+
 export const MyButton = styled.button`
   font-weight: 800;
   font-size: 16px;
@@ -20,8 +37,9 @@ export const MyButton = styled.button`
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  :focus {
-    outline: none;
+  :hover {
+    padding: 8.5px;
+    font-size: 15px;
   }
 `;
 
@@ -35,4 +53,24 @@ export const FlexRowJustifyCenterDiv = styled.div`
     width: ${(props) => (props.isMobile ? "140px" : "160px")};
     text-align: left;
   }
+`;
+
+export const ArticleFormContainer = styled.div`
+  background-color: #78aaf133;
+  padding: 25px;
+  border-radius: 20px;
+  margin: 20px;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+export const MainContainer = styled.div`
+  padding: 2.5%;
+  background-color: #ebebeb;
+  margin: 1%;
+  border-radius: 10px;
+  border: 2px solid #2c5e9c;
+  font-weight: 400;
+  color: black;
+  margin-bottom: 50px;
 `;
