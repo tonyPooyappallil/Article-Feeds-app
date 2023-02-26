@@ -83,16 +83,13 @@ const Settings = () => {
     }
 
     let dataToSubmit = { ...editedData, interests: finalCategoryList };
-    console.log("dataToSubmit.dateOfBirth", dataToSubmit.dateOfBirth);
 
     Object.keys(dataToSubmit).forEach((key) => {
       if (isEmpty(dataToSubmit[key]) && !dataToSubmit[key]) {
         delete dataToSubmit[key];
       }
     });
-    console.log("user", user);
     const data = await userUpdate(user.id, dataToSubmit);
-    console.log("data", data);
     setUser(data);
     localStorage.setItem("user", JSON.stringify(data));
     setEditToggle(false);

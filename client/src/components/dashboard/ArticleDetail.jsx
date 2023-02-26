@@ -20,7 +20,6 @@ const ArticleDetail = () => {
   if (!localUser) {
     navigate("/");
   }
-  console.log("localUser", localUser);
   let { id: articleId } = useParams();
   const [article, setArticle] = useState({});
   const [category, setCategory] = useState([]);
@@ -36,7 +35,6 @@ const ArticleDetail = () => {
   });
 
   useEffect(() => {
-    console.log("coming");
     const dataFetch = async () => {
       axios
         .get(`https://busy-plum-bee-cuff.cyclic.app/article/${articleId}`)
@@ -64,11 +62,9 @@ const ArticleDetail = () => {
         });
     };
     dataFetch();
-    console.log("ddd");
   }, []);
 
   const getUserReactionStatus = (data) => {
-    console.log("data", data);
     if (data.includes(localUser.id)) {
       return "blue";
     }
@@ -93,7 +89,6 @@ const ArticleDetail = () => {
       const value = { dislikes: newDislikeList, likes: newLikeList };
 
       const data = await articleUpdate(article._id, value);
-      console.log("data", data);
       setArticle({ ...data[0] });
 
       return;

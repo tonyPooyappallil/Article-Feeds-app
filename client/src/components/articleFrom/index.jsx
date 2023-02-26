@@ -17,7 +17,6 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
   }
   const [category, setCategory] = useState([]);
   const [article, setArticle] = useState({ ...existingArticle });
-  console.log("article", article);
 
   useEffect(() => {
     const dataFetch = async () => {

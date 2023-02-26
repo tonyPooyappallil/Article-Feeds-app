@@ -86,7 +86,6 @@ router.put('/', async (req, res) => {
     await User.findOneAndUpdate(filter, update)
     const data = await User.findOne(filter)
 
-    console.log('data', data)
     const {
       firstName,
       lastName,
@@ -97,17 +96,7 @@ router.put('/', async (req, res) => {
       interests,
       articles
     } = data
-    console.log(
-      'firstName,lastName,dateOfBirth',
-      firstName,
-      lastName,
-      dateOfBirth,
-      _id,
-      email,
-      mobileNum,
-      interests,
-      articles
-    )
+
     return res.status(200).send({
       firstName,
       lastName,

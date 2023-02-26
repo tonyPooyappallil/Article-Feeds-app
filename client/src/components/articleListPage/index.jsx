@@ -34,7 +34,6 @@ const ArticleList = () => {
 
   const deleteArticle = async (id) => {
     const data = await articleDelete(id);
-    console.log("data after dekleting", data);
     setArticles(authorArticleFilter(data, localUSer.id));
   };
 

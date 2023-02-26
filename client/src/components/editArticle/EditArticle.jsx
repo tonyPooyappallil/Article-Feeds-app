@@ -11,7 +11,6 @@ const EditArticle = () => {
   const [article, setArticle] = useState({});
 
   useEffect(() => {
-    console.log("coming");
     const dataFetch = async () => {
       axios
         .get(`https://busy-plum-bee-cuff.cyclic.app/article/${articleId}`)
@@ -31,7 +30,6 @@ const EditArticle = () => {
     navigate("dashboard/article-list-page");
   };
 
-  console.log("article in edit main", article);
   return (
     <ArticleFormContainer>
       <ArticleForm
