@@ -1,21 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { articleUpdate, useIsMobile } from "../../utilities";
+import { articleUpdate } from "../../utilities";
 import styled from "styled-components";
-import {
-  anotherLike,
-  blockButton,
-  dislikeButton,
-  likeButton,
-  newLike,
-} from "../../svgExports";
+import { blockButton, dislikeButton, likeButton } from "../../svgExports";
 import { MainContainer } from "../customStyledCompnents";
 
 const ArticleDetail = () => {
   const navigate = useNavigate();
   const localUser = JSON.parse(localStorage.getItem("user"));
-  const isMobile = useIsMobile();
 
   if (!localUser) {
     navigate("/");
@@ -141,7 +134,7 @@ const ArticleDetail = () => {
   };
 
   if (!article.title) {
-    return <div>loader</div>;
+    return;
   }
 
   return (

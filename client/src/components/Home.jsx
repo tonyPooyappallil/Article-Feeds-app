@@ -32,9 +32,9 @@ const Home = () => {
   const [lastName, setLastName] = useState("");
   const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState({});
-  const [userData, setUserData] = useState({});
-  const { loggedIn, setLogin } = useContext(AppContext);
-  const { user, setUserContext } = useContext(UserContext);
+  const [setUserData] = useState({});
+  const { setLogin } = useContext(AppContext);
+  const { setUserContext } = useContext(UserContext);
   const isMobile = useIsMobile();
   const loginSubmit = async (e) => {
     e.preventDefault();
