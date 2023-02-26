@@ -96,7 +96,7 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             type="text"
             value={article.title}
             onChange={(e) => {
-              articleOnChange({ title: e.target.value.trim() });
+              articleOnChange({ title: e.target.value });
             }}
           />
         </div>
@@ -109,7 +109,7 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             type="text"
             value={article.description}
             onChange={(e) => {
-              articleOnChange({ description: e.target.value.trim() });
+              articleOnChange({ description: e.target.value });
             }}
           />
         </div>
@@ -141,7 +141,7 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
           <textarea
             type="text"
             value={article.tags}
-            placeholder="Enter tags seperated by comma ex:( mytag, yourtag, theirtag )"
+            placeholder="Enter tags seperated by comma ex:( mytag,yourtag,theirtag )"
             onChange={(e) => {
               articleOnChange({ tags: e.target.value.trim() });
             }}

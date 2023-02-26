@@ -173,7 +173,7 @@ const Home = () => {
                     type="text"
                     name="name"
                     value={id}
-                    onChange={({ target: { value } }) => setId(value)}
+                    onChange={({ target: { value } }) => setId(value.trim())}
                   />
                 </div>
                 <div>
@@ -182,7 +182,9 @@ const Home = () => {
                     type="password"
                     name="name"
                     value={password}
-                    onChange={({ target: { value } }) => setPassword(value)}
+                    onChange={({ target: { value } }) =>
+                      setPassword(value.trim())
+                    }
                   />{" "}
                 </div>
               </div>
@@ -241,7 +243,7 @@ const Home = () => {
                     type="text"
                     name="name"
                     value={id}
-                    onChange={({ target: { value } }) => setId(value)}
+                    onChange={({ target: { value } }) => setId(value.trim())}
                   />
                 </div>
               </FlexRowJustifyCenterDiv>
@@ -253,10 +255,12 @@ const Home = () => {
                 <div>
                   <MyInput
                     isMobile={isMobile}
-                    type="text"
+                    type="number"
                     name="name"
                     value={mobile}
-                    onChange={({ target: { value } }) => setMobile(value)}
+                    onChange={({ target: { value } }) =>
+                      setMobile(value.trim())
+                    }
                   />
                 </div>
               </FlexRowJustifyCenterDiv>
@@ -284,7 +288,9 @@ const Home = () => {
                     type="password"
                     name="name"
                     value={password}
-                    onChange={({ target: { value } }) => setPassword(value)}
+                    onChange={({ target: { value } }) =>
+                      setPassword(value.trim())
+                    }
                   />
                 </div>
               </FlexRowJustifyCenterDiv>
@@ -306,7 +312,7 @@ const Home = () => {
                       } else {
                         setPasswordMismatch(false);
                       }
-                      setConfirmedPassword(value);
+                      setConfirmedPassword(value.trim());
                     }}
                   />
                   {passwordMismatch && <div>Passwords mismatch!</div>}
@@ -353,7 +359,7 @@ const MainContainer = styled.div`
 
 const LogoContainer = styled.div`
   width: ${(props) => (props.isMobile ? "80%" : "50%")};
-  padding-top: 40px;
+  padding-top: 30px;
   margin: auto;
   margin-bottom: 20px;
   img {
