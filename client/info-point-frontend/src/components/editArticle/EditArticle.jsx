@@ -27,7 +27,7 @@ const EditArticle = () => {
   const submitEdit = async (data) => {
     const { _id: id, blockList, likes, dislikes, ...actualData } = data;
     await articleUpdate(id, actualData);
-    navigate("/article-list-page");
+    navigate("dashboard/article-list-page");
   };
 
   console.log("article in edit main", article);

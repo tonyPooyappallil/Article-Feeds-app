@@ -1,9 +1,14 @@
+import { truncate } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { useIsMobile } from "../../utilities";
 
 const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   const [mappedArticles, setmappedArticles] = useState([]);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const filteredArticleData = articles.filter(({ category, blockList }) => {
       return (
@@ -16,8 +21,7 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   }, [articles, category, users]);
 
   return (
-    <div>
-      {" "}
+    <ArticleWallContainer isMobile={isMobile}>
       {mappedArticles.map((article) => (
         <div
           onClick={() => {
@@ -31,13 +35,35 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
             {" "}
             <h2>{article.title} </h2>{" "}
           </div>
-          <div>{article.description}</div>
-
-          <hr />
+          <div>
+            {" "}
+            {truncate(article.description)} {}
+          </div>
         </div>
       ))}
-    </div>
+    </ArticleWallContainer>
   );
 };
 
 export default ArticleWall;
+
+const ArticleWallContainer = styled.div`
+  display: ${(props) => (props.isMobile ? "" : "grid")};
+  grid-template-columns: ${(props) => (props.isMobile ? "" : "auto auto auto")};
+  background-color: #ffffff;
+  color: black;
+  > div {
+    border: 2px solid #eeeeee;
+    div:nth-of-type(3) {
+      margin-top: -10px;
+    }
+  }
+  div {
+    margin: 10px;
+    background-color: #eaeaee;
+    padding: 5px;
+    border-radius: 15px;
+  }
+`;
+
+//${(props) => (props.isMobile ? "" : "177px")};
