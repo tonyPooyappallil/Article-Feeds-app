@@ -145,10 +145,7 @@ const Home = () => {
   return (
     <MainContainer>
       <LogoContainer isMobile={isMobile}>
-        <img
-          src="https://www.infopoint.de//flash/images/logo/logo.png"
-          alt=""
-        />
+        <img src="/logo.png" alt="" />
       </LogoContainer>
 
       {!newUser ? (
@@ -262,18 +259,16 @@ const Home = () => {
                   />
                 </div>
               </FlexRowJustifyCenterDiv>
-              <DatePickerContainer isMobile={isMobile}>
-                <div>
-                  <label>Date Of Birth</label>{" "}
-                </div>{" "}
-                <div>
-                  <DatePicker
-                    format="dd-MM-y"
-                    value={dob}
-                    onChange={(date) => setDob(date)}
-                  />
-                </div>
-              </DatePickerContainer>
+              <div>
+                <label>Date of Birth</label>{" "}
+                <SpacerSpan isMobile={isMobile}></SpacerSpan>
+                <DatePicker
+                  style={{ marginRight: "-65px" }}
+                  format="dd-MM-y"
+                  value={dob}
+                  onChange={(date) => setDob(date)}
+                />
+              </div>
               <FlexRowJustifyCenterDiv isMobile={isMobile}>
                 <div>
                   {" "}
@@ -317,12 +312,18 @@ const Home = () => {
                 </div>
               </FlexRowJustifyCenterDiv>
             </SignUpContainer>
-
-            <Preferences
-              category={category}
-              catSelected={catSelected}
-              selectedCategory={Object.keys(selectedCategory)}
-            />
+            <CategorySlectionWrapper isMobile={isMobile}>
+              Select Your interested categories!
+              <Preferences
+                category={category}
+                catSelected={catSelected}
+                selectedCategory={Object.keys(selectedCategory)}
+              />
+              <div>
+                You can modify the interested categories in settings later as
+                well!
+              </div>
+            </CategorySlectionWrapper>
             <SubmitInput type="submit" value="Submit" />
           </form>
         </LoginContainer>
@@ -403,8 +404,9 @@ const SubmitInput = styled.input`
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  :focus {
-    outline: none;
+  :hover {
+    padding: 11px;
+    font-size: 15px;
   }
 `;
 
@@ -437,5 +439,25 @@ const DatePickerContainer = styled.div`
   div:nth-of-type(2) {
     width: ${(props) => (props.isMobile ? "" : "177px")};
     /* margin-left: 50px; */
+  }
+`;
+
+const SpacerSpan = styled.span`
+  width: ${(props) => (props.isMobile ? "40px" : "80px")};
+  display: inline-block;
+  margin-right: -30px;
+`;
+
+const CategorySlectionWrapper = styled.div`
+  font-size: ${(props) => (props.isMobile ? "16px" : "18px")};
+  font-weight: 600;
+  padding: ${(props) => (props.isMobile ? "7px" : "14px")};
+  > :nth-child(2) {
+    font-weight: 300;
+    font-size: ${(props) => (props.isMobile ? "14px" : "16px")};
+  }
+  > :nth-child(1) {
+    width: ${(props) => (props.isMobile ? "100%" : "40%")};
+    margin: auto;
   }
 `;

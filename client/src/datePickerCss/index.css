@@ -1,6 +1,8 @@
 .react-date-picker {
   display: inline-flex;
   position: relative;
+  margin-left: -6px;
+  margin-right: -10px;
 }
 
 .react-date-picker,
