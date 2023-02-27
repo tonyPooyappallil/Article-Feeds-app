@@ -14,6 +14,18 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
+    const { email, mobileNum } = req.body
+    const user = await User.find({
+      $or: [{ email }, { mobileNum }]
+    })
+      .lean()
+      .exec()
+    if (user.length) {
+      throw new Error(
+        'Email or Mobile number already exists. Please login or try with different input'
+      )
+    }
+
     const data = await User.create(req.body)
     return res.status(200).send({ data })
   } catch (err) {

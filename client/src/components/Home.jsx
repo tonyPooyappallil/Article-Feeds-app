@@ -109,6 +109,7 @@ const Home = () => {
     }
 
     // creating the user
+
     axios
       .post("https://busy-plum-bee-cuff.cyclic.app/user", {
         firstName,
@@ -121,7 +122,7 @@ const Home = () => {
       })
       .then(function (response) {})
       .catch(function (error) {
-        console.log(error);
+        alert(error.response.data);
       });
 
     setId("");
@@ -235,7 +236,7 @@ const Home = () => {
                 <div>
                   <MyInput
                     isMobile={isMobile}
-                    type="text"
+                    type="email"
                     name="name"
                     value={id}
                     onChange={({ target: { value } }) => setId(value.trim())}
@@ -425,20 +426,6 @@ const SignUpContainer = styled.div`
     font-weight: 600;
     padding: ${(props) => (props.isMobile ? "3px" : "3px")};
     /* padding-bottom: 0px; */
-  }
-`;
-const DatePickerContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  text-align: left;
-  div:nth-of-type(1) {
-    margin-left: 5px;
-    margin-right: ${(props) => (props.isMobile ? "0px" : "28px")};
-  }
-  div:nth-of-type(2) {
-    width: ${(props) => (props.isMobile ? "" : "177px")};
-    /* margin-left: 50px; */
   }
 `;
 
