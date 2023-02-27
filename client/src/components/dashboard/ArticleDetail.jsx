@@ -5,6 +5,7 @@ import { articleUpdate } from "../../utilities";
 import styled from "styled-components";
 import { blockButton, dislikeButton, likeButton } from "../../svgExports";
 import { MainContainer } from "../customStyledCompnents";
+import { Loader } from "../loader";
 
 const ArticleDetail = () => {
   const navigate = useNavigate();
@@ -134,7 +135,7 @@ const ArticleDetail = () => {
   };
 
   if (!article.title) {
-    return;
+    return <Loader></Loader>;
   }
 
   return (

@@ -38,11 +38,14 @@ export const userUpdate = async (id, value) => {
     })
   return data
 }
-
-export const articleCreate = async value => {
-  let data = axios
-    .post('https://busy-plum-bee-cuff.cyclic.app/article', {
-      ...value
+//https://busy-plum-bee-cuff.cyclic.app/article
+//http://localhost:3000/article
+export const articleCreate = async formData => {
+  const data = axios
+    .post('http://localhost:3005/article', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     })
     .then(function (data) {
       let actualData = data.data

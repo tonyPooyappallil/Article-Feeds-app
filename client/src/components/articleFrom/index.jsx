@@ -11,6 +11,8 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
   const localUSer = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [img, setImg] = useState();
+  const [dim, setDim] = useState("");
 
   if (!localUSer) {
     navigate("/");
@@ -78,9 +80,50 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
     await dataPoster(mappedArticle);
     navigate("/dashboard");
   };
+  const handleChange = (e) => {
+    setImg(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("customFile", img);
+
+    const mappedArticle = {
+      ...article,
+      category: Object.keys(article.category),
+      tags: article.tags.split(",").map((item) => item.trim()),
+      author: localUSer.id,
+    };
+    Object.keys(mappedArticle).forEach((key) =>
+      formData.append(key, mappedArticle[key])
+    );
+
+    const data = await dataPoster(formData);
+    setDim(data);
+
+    // axios
+    //   .post("http://localhost:3000/article", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then(function (data) {
+    //     let actualData = data.data;
+    //     return actualData;
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //     alert(
+    //       "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
+    //     );
+    //   });
+    // return data
+  };
 
   return (
-    <div>
+    <div encType="multipart/form-data">
       <h1>
         {!!Object.keys(existingArticle).length ? (
           <>Edit Article Details</>
@@ -88,32 +131,8 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
           <> Post New Article</>
         )}
       </h1>
-      <InputMainContainer>
-        <div>Title</div>
-        <div>
-          <textarea
-            type="text"
-            value={article.title}
-            onChange={(e) => {
-              articleOnChange({ title: e.target.value });
-            }}
-          />
-        </div>
-      </InputMainContainer>
-      <InputMainContainer>
-        <div>Description</div>
-        <div>
-          <textarea
-            style={{ height: "100px" }}
-            type="text"
-            value={article.description}
-            onChange={(e) => {
-              articleOnChange({ description: e.target.value });
-            }}
-          />
-        </div>
-      </InputMainContainer>
-      <InputMainContainer>
+
+      {/* <InputMainContainer>
         <div>Img Link</div>
         <div>
           <MyInput
@@ -125,28 +144,15 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
               articleOnChange({ img: e.target.value.trim() });
             }}
           />
-        </div>
-      </InputMainContainer>
-      <div>
-        <Preferences
-          category={category}
-          catSelected={catSelected}
-          selectedCategory={Object.keys(article.category || [])}
-        ></Preferences>
-      </div>
-      <InputMainContainer>
-        <div>Tags</div>
-        <div>
-          <textarea
-            type="text"
-            value={article.tags}
-            placeholder="Enter tags seperated by comma ex:( mytag,yourtag,theirtag )"
+          <MyInput
+            type="file"
             onChange={(e) => {
-              articleOnChange({ tags: e.target.value.trim() });
+              articleOnChange({ img: e.target.files[0] });
             }}
           />
         </div>
-      </InputMainContainer>
+      </InputMainContainer> */}
+      {/* 
       <InputMainContainer>
         <SubmitButton
           onClick={() => {
@@ -155,7 +161,59 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
         >
           Submit
         </SubmitButton>
-      </InputMainContainer>
+      </InputMainContainer> */}
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <InputMainContainer>
+          <div>Title</div>
+          <div>
+            <textarea
+              type="text"
+              value={article.title}
+              onChange={(e) => {
+                articleOnChange({ title: e.target.value });
+              }}
+            />
+          </div>
+        </InputMainContainer>
+
+        <InputMainContainer>
+          <div>Description</div>
+          <div>
+            <textarea
+              style={{ height: "100px" }}
+              type="text"
+              value={article.description}
+              onChange={(e) => {
+                articleOnChange({ description: e.target.value });
+              }}
+            />
+          </div>
+        </InputMainContainer>
+        <div>
+          <Preferences
+            category={category}
+            catSelected={catSelected}
+            selectedCategory={Object.keys(article.category || [])}
+          ></Preferences>
+        </div>
+
+        <InputMainContainer>
+          <div>Tags</div>
+          <div>
+            <textarea
+              type="text"
+              value={article.tags}
+              placeholder="Enter tags seperated by comma ex:( mytag,yourtag,theirtag )"
+              onChange={(e) => {
+                articleOnChange({ tags: e.target.value.trim() });
+              }}
+            />
+          </div>
+        </InputMainContainer>
+        <input type="file" name="photo" onChange={handleChange} />
+        <input type="submit" />
+      </form>
+      <img src={dim} alt="ssssss" />
     </div>
   );
 };

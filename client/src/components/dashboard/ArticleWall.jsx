@@ -22,25 +22,27 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
 
   return (
     <ArticleWallContainer isMobile={isMobile}>
-      {mappedArticles.map((article) => (
-        <div
-          onClick={() => {
-            navigate(article._id);
-          }}
-        >
-          <div>
-            <img src={article.img} alt="" />{" "}
+      {mappedArticles
+        .map((article) => (
+          <div
+            onClick={() => {
+              navigate(article._id);
+            }}
+          >
+            <div>
+              <img src={article.img} alt="" />{" "}
+            </div>
+            <div>
+              {" "}
+              <h2>{article.title} </h2>{" "}
+            </div>
+            <div>
+              {" "}
+              {truncate(article.description)} {}
+            </div>
           </div>
-          <div>
-            {" "}
-            <h2>{article.title} </h2>{" "}
-          </div>
-          <div>
-            {" "}
-            {truncate(article.description)} {}
-          </div>
-        </div>
-      ))}
+        ))
+        .reverse()}
     </ArticleWallContainer>
   );
 };
@@ -52,6 +54,7 @@ const ArticleWallContainer = styled.div`
   grid-template-columns: ${(props) => (props.isMobile ? "" : "auto auto auto")};
   background-color: #ffffff;
   color: black;
+  padding: ${(props) => (props.isMobile ? "5px 0px 50px 0px" : "")};
 
   > div {
     border: 2px solid #e6e6e6;
@@ -65,9 +68,9 @@ const ArticleWallContainer = styled.div`
   }
   div {
     margin: 10px;
-    background-color: #e6e6e6;
+    background-color: #f7f5f5;
     padding: 5px;
-    border-radius: 15px;
+    border-radius: 25px;
   }
 `;
 

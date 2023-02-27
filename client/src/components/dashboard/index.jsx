@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../loader";
 import ArticleWall from "./ArticleWall";
 
 const Dashboard = () => {
@@ -43,6 +44,10 @@ const Dashboard = () => {
     };
     dataFetch();
   }, []);
+
+  if (!articles.length) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div>

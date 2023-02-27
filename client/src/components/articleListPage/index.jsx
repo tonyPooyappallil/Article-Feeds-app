@@ -41,11 +41,16 @@ const ArticleList = () => {
     <div>
       <h1>Your Articles</h1>
       <div>
-        {articles.map((article) => (
-          <MainContainer>
-            <Article article={article} deleteArticle={deleteArticle}></Article>{" "}
-          </MainContainer>
-        ))}
+        {articles
+          .map((article) => (
+            <MainContainer>
+              <Article
+                article={article}
+                deleteArticle={deleteArticle}
+              ></Article>{" "}
+            </MainContainer>
+          ))
+          .reverse()}
       </div>
     </div>
   );
