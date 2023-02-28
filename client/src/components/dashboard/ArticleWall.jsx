@@ -1,8 +1,8 @@
 import { truncate } from "lodash";
 import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useIsMobile } from "../../utilities";
+import { getImg, useIsMobile } from "../../utilities";
 
 const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   const [mappedArticles, setmappedArticles] = useState([]);
@@ -30,7 +30,7 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
             }}
           >
             <div>
-              <img src={article.img} alt="" />{" "}
+              <img src={getImg(article.img)} alt="" />{" "}
             </div>
             <div>
               {" "}
@@ -73,5 +73,3 @@ const ArticleWallContainer = styled.div`
     border-radius: 25px;
   }
 `;
-
-//${(props) => (props.isMobile ? "" : "177px")};

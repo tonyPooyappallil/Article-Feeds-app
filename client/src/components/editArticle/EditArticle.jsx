@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { articleUpdate } from "../../utilities";
+import { articleBodyUpdate } from "../../utilities";
 import ArticleForm from "../articleFrom";
 import { ArticleFormContainer } from "../customStyledCompnents";
 
@@ -24,10 +24,14 @@ const EditArticle = () => {
     dataFetch();
   }, []);
 
-  const submitEdit = async (data) => {
-    const { _id: id, blockList, likes, dislikes, ...actualData } = data;
-    await articleUpdate(id, actualData);
+  const submitEdit = async (formData) => {
+    formData.delete("likes");
+    formData.delete("blockList");
+    formData.delete("dislikes");
+    formData.append("articleId", articleId);
+    await articleBodyUpdate(formData);
     navigate("dashboard/article-list-page");
+    console.log("formData", formData);
   };
 
   return (

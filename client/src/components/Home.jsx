@@ -115,7 +115,7 @@ const Home = () => {
         firstName,
         lastName,
         dateOfBirth: dob,
-        email: id,
+        email: id.toLowerCase(),
         mobileNum: mobile,
         password,
         interests: finalCategoryList,

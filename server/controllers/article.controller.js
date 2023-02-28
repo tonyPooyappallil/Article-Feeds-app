@@ -5,16 +5,9 @@ const upload = require('../middlewares/file-upload')
 multipart_parser = require('@krvinay/multipart-body-parser')
 var path = require('path')
 var fs = require('fs')
-let mime = {
-  html: 'text/html',
-  txt: 'text/plain',
-  css: 'text/css',
-  gif: 'image/gif',
-  jpg: 'image/jpeg',
-  png: 'image/png',
-  svg: 'image/svg+xml',
-  js: 'application/javascript'
-}
+let dummyImg =
+  '1677568239035_8404445081R580Hj4j2hinfoTonPoo_No_image_available.png'
+let dir = path.join(__dirname, '../uploads')
 
 router.get('/', async (req, res) => {
   try {
@@ -30,9 +23,10 @@ router.post(
 
   async (req, res) => {
     try {
+      const { filename: file = dummyImg } = req.file || {}
       const category = req.body.category.split(',')
       const tags = req.body.tags.split(',')
-      const file = req.file.path
+
       const data = await Article.create({
         ...req.body,
         tags,
@@ -46,24 +40,6 @@ router.post(
     }
   }
 )
-
-router.get('/download', async (req, res) => {
-  try {
-    const { path: file } = req.body
-    var type = mime[path.extname(file).slice(1)] || 'text/plain'
-    var s = fs.createReadStream(file)
-    s.on('open', function () {
-      res.set('Content-Type', type)
-      s.pipe(res)
-    })
-    s.on('error', function () {
-      res.set('Content-Type', 'text/plain')
-      res.status(404).end('Not found')
-    })
-  } catch (err) {
-    return res.status(400).send(err.message)
-  }
-})
 
 router.get('/:id', async (req, res) => {
   try {
@@ -87,9 +63,41 @@ router.put('/', async (req, res) => {
   }
 })
 
+router.put('/body', upload.single('customFile'), async (req, res) => {
+  try {
+    const { _id: id, value } = req.body
+    const { filename: file = dummyImg } = req.file || {}
+    const filter = { _id: id }
+    const category = req.body.category.split(',')
+    const tags = req.body.tags.split(',')
+    const update = { ...value, img: file, category, tags }
+
+    let existingArticle = await Article.findById(id)
+
+    if (existingArticle.img !== dummyImg) {
+      fs.unlink(`${dir}/${existingArticle.img}`, err => {
+        if (err) console.log(err)
+      })
+    }
+    await Article.findOneAndUpdate(filter, update)
+    const data = await Article.find(filter)
+    return res.status(200).send({ data })
+  } catch (err) {
+    return res.status(400).send(err.message)
+  }
+})
+
 router.delete('/:id', async (req, res) => {
   try {
     const { id = '' } = req.params
+
+    let existingArticle = await Article.findById(id)
+    if (existingArticle.img !== dummyImg) {
+      fs.unlink(`${dir}/${existingArticle.img}`, err => {
+        if (err) console.log(err)
+      })
+    }
+
     await Article.deleteOne({ _id: id }).lean().exec()
     const data = await Article.find()
     return res.status(200).send({ data })

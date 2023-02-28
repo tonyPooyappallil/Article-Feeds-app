@@ -157,7 +157,10 @@ const Settings = () => {
               type="text"
               onChange={(e) => {
                 setEditedData((data) => {
-                  return { ...data, email: e.target.value.trim() };
+                  return {
+                    ...data,
+                    email: e.target.value.toLowerCase().trim(),
+                  };
                 });
               }}
             />
@@ -252,13 +255,16 @@ const Settings = () => {
       )}
       {editToggle && (
         <div>
-          <SubmitButton
-            onClick={() => {
-              onEditSubmit();
-            }}
-          >
-            Submit
-          </SubmitButton>
+          You can submit the changes after editing any number of fields
+          <div style={{ marginTop: "10px" }}>
+            <SubmitButton
+              onClick={() => {
+                onEditSubmit();
+              }}
+            >
+              Submit
+            </SubmitButton>
+          </div>
         </div>
       )}
     </MainContainer>

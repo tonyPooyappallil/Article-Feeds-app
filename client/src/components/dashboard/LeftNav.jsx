@@ -60,5 +60,3 @@ const LeftNav = () => {
 };
 
 export default LeftNav;
-
-//${(props) => (props.isMobile ? "" : "177px")};

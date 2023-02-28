@@ -4,15 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Preferences from "../signup/Preferences";
 import styled from "styled-components";
-import { MyInput, SubmitButton } from "../customStyledCompnents";
-import { useIsMobile } from "../../utilities";
 
 const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
   const localUSer = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const [img, setImg] = useState();
-  const [dim, setDim] = useState("");
 
   if (!localUSer) {
     navigate("/");
@@ -70,16 +66,6 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
     });
   };
 
-  const submitArticle = async () => {
-    const mappedArticle = {
-      ...article,
-      category: Object.keys(article.category),
-      tags: article.tags.split(",").map((item) => item.trim()),
-      author: localUSer.id,
-    };
-    await dataPoster(mappedArticle);
-    navigate("/dashboard");
-  };
   const handleChange = (e) => {
     setImg(e.target.files[0]);
   };
@@ -93,33 +79,15 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
     const mappedArticle = {
       ...article,
       category: Object.keys(article.category),
-      tags: article.tags.split(",").map((item) => item.trim()),
+      tags: article.tags?.split(",").map((item) => item.trim()),
       author: localUSer.id,
     };
     Object.keys(mappedArticle).forEach((key) =>
       formData.append(key, mappedArticle[key])
     );
 
-    const data = await dataPoster(formData);
-    setDim(data);
-
-    // axios
-    //   .post("http://localhost:3000/article", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then(function (data) {
-    //     let actualData = data.data;
-    //     return actualData;
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //     alert(
-    //       "Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up"
-    //     );
-    //   });
-    // return data
+    await dataPoster(formData);
+    navigate("/dashboard");
   };
 
   return (
@@ -132,36 +100,6 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
         )}
       </h1>
 
-      {/* <InputMainContainer>
-        <div>Img Link</div>
-        <div>
-          <MyInput
-            isMobile={isMobile}
-            placeholder="Link to the image you want to post."
-            type="text"
-            value={article.img}
-            onChange={(e) => {
-              articleOnChange({ img: e.target.value.trim() });
-            }}
-          />
-          <MyInput
-            type="file"
-            onChange={(e) => {
-              articleOnChange({ img: e.target.files[0] });
-            }}
-          />
-        </div>
-      </InputMainContainer> */}
-      {/* 
-      <InputMainContainer>
-        <SubmitButton
-          onClick={() => {
-            submitArticle();
-          }}
-        >
-          Submit
-        </SubmitButton>
-      </InputMainContainer> */}
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <InputMainContainer>
           <div>Title</div>
@@ -190,12 +128,22 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
           </div>
         </InputMainContainer>
         <div>
+          <div style={{ marginTop: "10px" }}>
+            Select the category which this Article belongs to
+          </div>{" "}
           <Preferences
             category={category}
             catSelected={catSelected}
             selectedCategory={Object.keys(article.category || [])}
           ></Preferences>
         </div>
+
+        <InputMainContainer>
+          <div>Upload image</div>
+          <div>
+            <FileInput type="file" name="photo" onChange={handleChange} />
+          </div>
+        </InputMainContainer>
 
         <InputMainContainer>
           <div>Tags</div>
@@ -210,10 +158,9 @@ const ArticleForm = ({ dataPoster = () => {}, existingArticle = [] }) => {
             />
           </div>
         </InputMainContainer>
-        <input type="file" name="photo" onChange={handleChange} />
-        <input type="submit" />
+
+        <SubmitInput type="submit" />
       </form>
-      <img src={dim} alt="ssssss" />
     </div>
   );
 };
@@ -234,5 +181,38 @@ const InputMainContainer = styled.div`
       outline-style: outset;
       outline-color: grey;
     }
+  }
+`;
+
+const SubmitInput = styled.input`
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #4d8fff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  :hover {
+    padding: 11px;
+    font-size: 15px;
+  }
+`;
+
+const FileInput = styled.input`
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #4d8fff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  :hover {
+    padding: 11px;
+    font-size: 15px;
+  }
+  input {
+    background-color: black;
   }
 `;

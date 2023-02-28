@@ -2,6 +2,7 @@ const express = require('express')
 const User = require('../models/user.model')
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const emailValidator = require('email-validator')
 
 router.get('/', async (req, res) => {
   try {
@@ -15,6 +16,11 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { email, mobileNum } = req.body
+
+    if (!emailValidator.validate(email)) {
+      throw new Error('Please use a valid email id')
+    }
+
     const user = await User.find({
       $or: [{ email }, { mobileNum }]
     })
@@ -48,7 +54,7 @@ router.post('/login', async (req, res) => {
 
     let user
     if (isNaN(id)) {
-      user = await User.findOne({ email: id }).lean().exec()
+      user = await User.findOne({ email: id.toLowerCase() }).lean().exec()
     } else {
       user = await User.findOne({ mobileNum: id }).lean().exec()
     }

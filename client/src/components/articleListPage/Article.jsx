@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyButton } from "../customStyledCompnents";
 import styled from "styled-components";
+import { getImg } from "../../utilities";
 const Article = ({ article = {}, deleteArticle }) => {
   const [showWarning, setShowWarning] = useState(false);
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Article = ({ article = {}, deleteArticle }) => {
     <div>
       <div>
         <div>
-          <img src={article.img} alt="" />
+          <img src={getImg(article.img)} alt="" />
         </div>
         <div>
           <div>
