@@ -2,7 +2,7 @@ import { truncate } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getImg, useIsMobile } from "../../utilities";
+import { useIsMobile } from "../../utilities";
 
 const ArticleWall = ({ articles, category, users, loggedInUser }) => {
   const [mappedArticles, setmappedArticles] = useState([]);
@@ -30,7 +30,7 @@ const ArticleWall = ({ articles, category, users, loggedInUser }) => {
             }}
           >
             <div>
-              <img src={getImg(article.img)} alt="" />{" "}
+              <img src={article.img} alt="" />{" "}
             </div>
             <div>
               {" "}

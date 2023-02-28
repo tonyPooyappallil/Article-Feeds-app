@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { articleUpdate, getImg } from "../../utilities";
+import { articleUpdate } from "../../utilities";
 import styled from "styled-components";
 import { blockButton, dislikeButton, likeButton } from "../../svgExports";
 import { MainContainer } from "../customStyledCompnents";
@@ -141,7 +141,7 @@ const ArticleDetail = () => {
   return (
     <MainContainer>
       <div>
-        <img src={getImg(article.img)} alt="" />{" "}
+        <img src={article.img} alt="" />{" "}
       </div>
       <div>
         {" "}

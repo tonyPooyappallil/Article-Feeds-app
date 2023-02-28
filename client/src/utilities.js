@@ -38,37 +38,12 @@ export const userUpdate = async (id, value) => {
     })
   return data
 }
-//https://busy-plum-bee-cuff.cyclic.app/article
-//http://localhost:3000/article
-export const articleCreate = async formData => {
+
+export const articleCreate = async value => {
   const data = axios
-    .post('https://busy-plum-bee-cuff.cyclic.app/article', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    .post('https://busy-plum-bee-cuff.cyclic.app/article', value)
     .then(function (data) {
       let actualData = data.data
-      return actualData
-    })
-    .catch(function (error) {
-      console.log(error)
-      alert(
-        'Uh oh, the data you provided is incorrect. If you dont have an account yet, please Sign up'
-      )
-    })
-  return data
-}
-
-export const articleBodyUpdate = async value => {
-  let data = axios
-    .put('https://busy-plum-bee-cuff.cyclic.app/article/body', value, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then(function (data) {
-      let actualData = data.data.data
       return actualData
     })
     .catch(function (error) {
@@ -98,11 +73,4 @@ export const articleDelete = async id => {
 export const useIsMobile = () => {
   const { width } = useWindowSize()
   return width < 770
-}
-
-export const getImg = (imgLink = '') => {
-  if (imgLink.includes('1R580Hj4j2hinfoTonPoo')) {
-    return `https://busy-plum-bee-cuff.cyclic.app/${imgLink}`
-  }
-  return imgLink
 }
