@@ -19,3 +19,4 @@ Checkout the app live at https://infopointapp.netlify.app/
 3. Improved signUp scrutiny in backend
 4. Fixed loader component
 5. Improved Nav design
+ 
